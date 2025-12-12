@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Entre Sonhos — Writing Tracker</title>
+  <style>
+    :root{
+      --bg:#0f1115;
+      --card:#151923;
+      --muted:#9aa3b2;
+      --text:#e9eef7;
+      --accent:#ff8a3d;
+      --accent2:#6ee7ff;
+      --line:#2a3040;
+      --danger:#ff5c5c;
+      --ok:#46d39a;
+      --warn:#ffd166;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 700px at 15% 10%, rgba(255,138,61,.18), transparent 60%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(110,231,255,.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+    }
+    header{
+      padding: 22px 18px 10px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:baseline; flex-wrap:wrap;
+    }
+    .brand h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.4px;
+      font-weight:700;
+    }
+    .brand .sub{
+      color: var(--muted);
+      font-size: 13px;
+    }
+    main{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 10px 18px 28px;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 40%),
+                  var(--card);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .card h2{
+      margin:0 0 10px;
+      font-size: 14px;
+      color: #dfe7f7;
+      letter-spacing:.3px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .field label{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .field input, .field textarea{
+      width:100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      padding: 10px 10px;
+      font-size: 14px;
+      outline:none;
+    }
+    .field textarea{
+      min-height: 64px;
+      resize: vertical;
+    }
+    .row{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      margin-top: 10px;
+    }
+    button{
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor:pointer;
+      font-weight: 600;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    button.primary{
+      background: linear-gradient(180deg, rgba(255,138,61,.95), rgba(255,138,61,.75));
+      border: 1px solid rgba(255,138,61,.35);
+      color:#161616;
+    }
+    button.ghost{
+      background: transparent;
+    }
+    button.danger{
+      background: rgba(255,92,92,.12);
+      border: 1px solid rgba(255,92,92,.35);
+      color: #ffd5d5;
+    }
+    button:disabled{
+      opacity:.55; cursor:not-allowed;
+    }
+    .tiny{
+      font-size: 12px; color: var(--muted);
+    }
+    .stats{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .stat{
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .stat .k{font-size: 12px; color: var(--muted)}
+    .stat .v{font-size: 18px; font-weight: 800; margin-top: 3px}
+    .canvasWrap{
+      padding: 10px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    canvas{width:100%; height: 360px; display:block}
+    .table{
+      width:100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      overflow:hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .table th, .table td{
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .table th{
+      text-align:left;
+      color: var(--muted);
+      font-weight: 700;
+      background: rgba(255,255,255,.03);
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+    .pill.ok{border-color: rgba(70,211,154,.45); background: rgba(70,211,154,.10)}
+    .pill.warn{border-color: rgba(255,209,102,.45); background: rgba(255,209,102,.10)}
+    .muted{color: var(--muted)}
+    .actions{display:flex; gap:8px; flex-wrap:wrap}
+    .footerNote{
+      margin-top: 10px;
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap:wrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    a.link{color: var(--accent); text-decoration:none}
+    a.link:hover{text-decoration:underline}
+    input[type="file"]{display:none}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      color: #cfd6e6;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>Entre Sonhos — Writing Tracker</h1>
+    <div class="sub">Regista palavras por dia • objetivo flexível • gráfico + export/import JSON</div>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT: INPUTS + STATS -->
+  <section class="card">
+    <h2>Adicionar / editar entrada</h2>
+
+    <div class="grid">
+      <div class="field">
+        <label>Data</label>
+        <input id="date" type="date" />
+      </div>
+      <div class="field">
+        <label>Palavras escritas</label>
+        <input id="words" type="number" min="0" step="1" placeholder="ex.: 850" />
+      </div>
+      <div class="field">
+        <label>Objetivo do dia</label>
+        <input id="goal" type="number" min="0" step="1" placeholder="ex.: 500" />
+      </div>
+      <div class="field">
+        <label>Nota (opcional)</label>
+        <input id="note" type="text" maxlength="140" placeholder="ex.: Capítulo 3 / cena da estação" />
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="primary" id="saveBtn">Guardar entrada</button>
+      <button class="ghost" id="clearBtn">Limpar</button>
+      <button class="danger" id="deleteBtn" disabled>Apagar esta entrada</button>
+    </div>
+
+    <div class="row" style="margin-top:14px">
+      <button id="exportJsonBtn">Exportar JSON</button>
+      <label for="importFile" class="kbd" style="cursor:pointer">Importar JSON</label>
+      <input id="importFile" type="file" accept="application/json" />
+      <button id="exportPngBtn">Exportar gráfico (PNG)</button>
+    </div>
+
+    <p class="tiny" style="margin-top:10px">
+      Dica: usa <span class="kbd">Importar JSON</span> para recuperar dados noutro dispositivo.
+      O ficheiro é a “memória” da app.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><div class="k">Total</div><div class="v" id="statTotal">0</div></div>
+      <div class="stat"><div class="k">Média / dia</div><div class="v" id="statAvg">0</div></div>
+      <div class="stat"><div class="k">Dias registados</div><div class="v" id="statDays">0</div></div>
+      <div class="stat"><div class="k">% dias com objetivo</div><div class="v" id="statHit">0%</div></div>
+    </div>
+
+    <div class="footerNote">
+      <span>Marca: <span class="muted">@blog_entre_sonhos</span></span>
+      <span class="muted">Ficheiro: <span id="statFile">—</span></span>
+    </div>
+  </section>
+
+  <!-- RIGHT: CHART + TABLE -->
+  <section class="card">
+    <h2>Evolução</h2>
+    <div class="canvasWrap">
+      <canvas id="chart" width="1400" height="520"></canvas>
+    </div>
+
+    <div class="row" style="margin-top:10px">
+      <span class="pill" style="border-color: rgba(255,255,255,.18)"><span style="width:10px;height:10px;border-radius:3px;background:var(--accent2);display:inline-block"></span> Palavras</span>
+      <span class="pill" style="border-color: rgba(255,255,255,.18)"><span style="width:10px;height:2px;background:var(--warn);display:inline-block"></span> Objetivo</span>
+      <span class="tiny">Clique numa linha da tabela para carregar/editar essa entrada.</span>
+    </div>
+
+    <table class="table" id="entriesTable" aria-label="Entradas">
+      <thead>
+        <tr>
+          <th style="width:120px">Data</th>
+          <th style="width:110px">Palavras</th>
+          <th style="width:110px">Objetivo</th>
+          <th>Estado</th>
+          <th>Nota</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- State ----------
+  const state = {
+    app: "EntreSonhosWritingTracker",
+    version: 1,
+    entries: [], // {date: 'YYYY-MM-DD', words: number, goal: number, note?: string}
+    loadedFileName: null,
+    selectedDate: null
+  };
+
+  // ---------- DOM ----------
+  const elDate = document.getElementById("date");
+  const elWords = document.getElementById("words");
+  const elGoal  = document.getElementById("goal");
+  const elNote  = document.getElementById("note");
+
+  const btnSave = document.getElementById("saveBtn");
+  const btnClear = document.getElementById("clearBtn");
+  const btnDelete = document.getElementById("deleteBtn");
+
+  const btnExportJson = document.getElementById("exportJsonBtn");
+  const inpImport = document.getElementById("importFile");
+  const btnExportPng = document.getElementById("exportPngBtn");
+
+  const statTotal = document.getElementById("statTotal");
+  const statAvg = document.getElementById("statAvg");
+  const statDays = document.getElementById("statDays");
+  const statHit = document.getElementById("statHit");
+  const statFile = document.getElementById("statFile");
+
+  const tableBody = document.querySelector("#entriesTable tbody");
+
+  const canvas = document.getElementById("chart");
+  const ctx = canvas.getContext("2d");
+
+  // ---------- Helpers ----------
+  function todayISO(){
+    const d = new Date();
+    const tz = d.getTimezoneOffset() * 60000;
+    return new Date(d - tz).toISOString().slice(0,10);
+  }
+
+  function clampInt(v){
+    const n = Number(v);
+    if (!Number.isFinite(n)) return null;
+    return Math.max(0, Math.round(n));
+  }
+
+  function sortEntries(){
+    state.entries.sort((a,b)=> a.date.localeCompare(b.date));
+  }
+
+  function findEntry(date){
+    return state.entries.find(e => e.date === date) || null;
+  }
+
+  function upsertEntry(entry){
+    const existing = findEntry(entry.date);
+    if (existing){
+      existing.words = entry.words;
+      existing.goal  = entry.goal;
+      existing.note  = entry.note || "";
+    } else {
+      state.entries.push(entry);
+    }
+    sortEntries();
+  }
+
+  function deleteEntry(date){
+    state.entries = state.entries.filter(e => e.date !== date);
+    if (state.selectedDate === date) state.selectedDate = null;
+  }
+
+  function formatNumber(n){
+    return new Intl.NumberFormat("pt-PT").format(n);
+  }
+
+  function pct(n){
+    return Math.round(n) + "%";
+  }
+
+  // ---------- UI ----------
+  function setSelected(date){
+    state.selectedDate = date;
+    const e = date ? findEntry(date) : null;
+    btnDelete.disabled = !e;
+    btnSave.textContent = e ? "Guardar alterações" : "Guardar entrada";
+  }
+
+  function clearForm(){
+    elDate.value = todayISO();
+    elWords.value = "";
+    elGoal.value = "";
+    elNote.value = "";
+    setSelected(null);
+  }
+
+  function loadEntryToForm(date){
+    const e = findEntry(date);
+    if (!e) return;
+    elDate.value = e.date;
+    elWords.value = e.words;
+    elGoal.value = e.goal;
+    elNote.value = e.note || "";
+    setSelected(e.date);
+  }
+
+  function renderStats(){
+    const total = state.entries.reduce((s,e)=> s + e.words, 0);
+    const days = state.entries.length;
+    const avg = days ? Math.round(total / days) : 0;
+
+    const hit = days ? (state.entries.filter(e => e.words >= e.goal).length / days) * 100 : 0;
+
+    statTotal.textContent = formatNumber(total);
+    statDays.textContent = formatNumber(days);
+    statAvg.textContent = formatNumber(avg);
+    statHit.textContent = pct(hit);
+
+    statFile.textContent = state.loadedFileName || "—";
+  }
+
+  function renderTable(){
+    tableBody.innerHTML = "";
+    for (const e of state.entries){
+      const tr = document.createElement("tr");
+      tr.style.cursor = "pointer";
+
+      const ok = e.words >= e.goal;
+      const status = ok ? `<span class="pill ok">✅ bateu</span>` : `<span class="pill warn">⚠️ abaixo</span>`;
+
+      tr.innerHTML = `
+        <td>${e.date}</td>
+        <td>${formatNumber(e.words)}</td>
+        <td>${formatNumber(e.goal)}</td>
+        <td>${status}</td>
+        <td class="muted">${escapeHtml(e.note || "")}</td>
+      `;
+
+      tr.addEventListener("click", ()=>{
+        loadEntryToForm(e.date);
+      });
+
+      tableBody.appendChild(tr);
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[s]));
+  }
+
+  // ---------- Chart (custom canvas, offline, no libs) ----------
+  function drawChart(){
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    // background (white-ish card feel)
+    ctx.fillStyle = "rgba(0,0,0,0)";
+    ctx.fillRect(0,0,W,H);
+
+    const padL = 90, padR = 30, padT = 30, padB = 70;
+    const chartW = W - padL - padR;
+    const chartH = H - padT - padB;
+
+    // If no data
+    if (state.entries.length === 0){
+      ctx.fillStyle = "rgba(233,238,247,.75)";
+      ctx.font = "600 22px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+      ctx.fillText("Sem dados ainda — adiciona a tua primeira entrada 🙂", padL, padT + 60);
+      return;
+    }
+
+    const dates = state.entries.map(e => e.date);
+    const words = state.entries.map(e => e.words);
+    const goals = state.entries.map(e => e.goal);
+
+    const maxY = Math.max(10, ...words, ...goals);
+    // Add headroom
+    const yMax = Math.ceil(maxY * 1.12);
+
+    // Grid
+    const gridLines = 5;
+    ctx.strokeStyle = "rgba(255,255,255,.08)";
+    ctx.lineWidth = 1;
+
+    for (let i=0;i<=gridLines;i++){
+      const y = padT + (chartH * i / gridLines);
+      ctx.beginPath();
+      ctx.moveTo(padL, y);
+      ctx.lineTo(padL + chartW, y);
+      ctx.stroke();
+    }
+
+    // Axes
+    ctx.strokeStyle = "rgba(255,255,255,.16)";
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(padL, padT);
+    ctx.lineTo(padL, padT + chartH);
+    ctx.lineTo(padL + chartW, padT + chartH);
+    ctx.stroke();
+
+    // Y labels
+    ctx.fillStyle = "rgba(233,238,247,.75)";
+    ctx.font = "600 14px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+    for (let i=0;i<=gridLines;i++){
+      const v = Math.round(yMax * (1 - i / gridLines));
+      const y = padT + (chartH * i / gridLines);
+      ctx.fillText(String(v), 18, y + 5);
+    }
+
+    // X positions
+    const n = state.entries.length;
+    const x = (idx) => padL + (n===1 ? chartW/2 : (chartW * idx / (n-1)));
+    const y = (val) => padT + chartH - (chartH * (val / yMax));
+
+    // Goal line (dashed)
+    ctx.save();
+    ctx.setLineDash([10,8]);
+    ctx.strokeStyle = "rgba(255,209,102,.85)"; // warn
+    ctx.lineWidth = 3;
+
+    ctx.beginPath();
+    for (let i=0;i<n;i++){
+      const xi = x(i), yi = y(goals[i]);
+      if (i===0) ctx.moveTo(xi, yi); else ctx.lineTo(xi, yi);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // Words line
+    ctx.strokeStyle = "rgba(110,231,255,.95)";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    for (let i=0;i<n;i++){
+      const xi = x(i), yi = y(words[i]);
+      if (i===0) ctx.moveTo(xi, yi); else ctx.lineTo(xi, yi);
+    }
+    ctx.stroke();
+
+    // Points
+    for (let i=0;i<n;i++){
+      const xi = x(i), yi = y(words[i]);
+      ctx.fillStyle = "rgba(110,231,255,1)";
+      ctx.beginPath();
+      ctx.arc(xi, yi, 6, 0, Math.PI*2);
+      ctx.fill();
+
+      // point outline
+      ctx.strokeStyle = "rgba(15,17,21,.55)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    }
+
+    // X labels (sparse)
+    ctx.fillStyle = "rgba(233,238,247,.75)";
+    ctx.font = "600 13px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+    const every = n <= 10 ? 1 : (n <= 20 ? 2 : 4);
+    for (let i=0;i<n;i+=every){
+      const d = dates[i];
+      const label = d.slice(8,10) + "/" + d.slice(5,7); // dd/mm
+      const xi = x(i);
+      ctx.save();
+      ctx.translate(xi, padT + chartH + 28);
+      ctx.rotate(-0.35);
+      ctx.fillText(label, -16, 0);
+      ctx.restore();
+    }
+
+    // Title inside chart
+    ctx.fillStyle = "rgba(233,238,247,.92)";
+    ctx.font = "800 18px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+    ctx.fillText("Palavras por dia (com objetivo)", padL, 22);
+
+    // watermark
+    ctx.fillStyle = "rgba(233,238,247,.45)";
+    ctx.font = "600 12px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+    ctx.fillText("@blog_entre_sonhos", padL + chartW - 130, padT + chartH + 52);
+  }
+
+  // ---------- JSON import/export ----------
+  function buildExportObject(){
+    return {
+      app: state.app,
+      version: state.version,
+      exportedAt: new Date().toISOString(),
+      entries: state.entries.map(e => ({
+        date: e.date,
+        words: e.words,
+        goal: e.goal,
+        note: e.note || ""
+      }))
+    };
+  }
+
+  function downloadBlob(blob, filename){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  function exportJSON(){
+    const obj = buildExportObject();
+    const pretty = JSON.stringify(obj, null, 2);
+    const blob = new Blob([pretty], {type:"application/json"});
+    const stamp = new Date().toISOString().slice(0,10);
+    downloadBlob(blob, `entre-sonhos-writing-tracker_${stamp}.json`);
+  }
+
+  function importJSON(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(String(reader.result || ""));
+        if (!data || data.app !== state.app) {
+          alert("Este ficheiro não parece ser do Entre Sonhos Writing Tracker.");
+          return;
+        }
+        const entries = Array.isArray(data.entries) ? data.entries : [];
+        const cleaned = [];
+        for (const raw of entries){
+          if (!raw || typeof raw.date !== "string") continue;
+          const w = clampInt(raw.words);
+          const g = clampInt(raw.goal);
+          if (w === null || g === null) continue;
+          cleaned.push({
+            date: raw.date.slice(0,10),
+            words: w,
+            goal: g,
+            note: typeof raw.note === "string" ? raw.note.slice(0,140) : ""
+          });
+        }
+        state.entries = cleaned;
+        sortEntries();
+        state.loadedFileName = file.name;
+        state.selectedDate = null;
+
+        // set form date to today
+        elDate.value = todayISO();
+        elWords.value = "";
+        elGoal.value = "";
+        elNote.value = "";
+        setSelected(null);
+
+        refreshAll();
+      } catch(err){
+        alert("Não consegui ler este JSON. Confirma se é um ficheiro válido.");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // ---------- PNG export ----------
+  function exportPNG(){
+    // For a clean white background on exported image
+    const temp = document.createElement("canvas");
+    temp.width = canvas.width;
+    temp.height = canvas.height;
+    const tctx = temp.getContext("2d");
+
+    // Fill white
+    tctx.fillStyle = "#ffffff";
+    t
