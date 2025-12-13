@@ -21,9 +21,10 @@
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1000px 500px at 20% -10%, rgba(255,122,24,.18), transparent 60%),
-                  radial-gradient(900px 500px at 90% 10%, rgba(255,122,24,.12), transparent 55%),
-                  var(--bg);
+      background:
+        radial-gradient(1000px 500px at 20% -10%, rgba(255,122,24,.18), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(255,122,24,.12), transparent 55%),
+        var(--bg);
       color:var(--text);
     }
     a{color:var(--accent); text-decoration:none}
@@ -135,7 +136,7 @@
     canvas{
       width:100%;
       height:320px;
-      background: #000000;
+      background: rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.06);
       border-radius: 16px;
       display:block;
@@ -188,10 +189,8 @@
 
         <div class="btns" style="margin-top:10px">
           <button id="exportJsonBtn">Exportar JSON</button>
-          <label style="margin:0; display:flex; align-items:center; gap:10px">
-            <input id="importFile" type="file" accept="application/json" style="display:none" />
-            <button id="importJsonBtn" type="button">Importar JSON</button>
-          </label>
+          <input id="importFile" type="file" accept="application/json" style="display:none" />
+          <button id="importJsonBtn" type="button">Importar JSON</button>
           <button id="exportPngBtn">Exportar gráfico (PNG)</button>
         </div>
 
@@ -243,13 +242,13 @@
     </div>
   </div>
 
-    <script>
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // ---------- Estado ----------
-      var entries = {}; // { 'YYYY-MM-DD': {words: number, goal: number|null, note: string} }
+      // ------ Estado ------
+      var entries = {}; // { 'YYYY-MM-DD': {words, goal, note} }
       var loadedFileName = "—";
 
-      // ---------- Util ----------
+      // ------ Helpers ------
       function $(id){ return document.getElementById(id); }
 
       var dateEl = $("date");
@@ -317,7 +316,6 @@
         wordsEl.value = "";
         goalEl.value  = "";
         noteEl.value  = "";
-        render();
       }
 
       function loadToForm(dateKey){
@@ -325,30 +323,32 @@
         if (!e) return;
         dateEl.value = dateKey;
         wordsEl.value = String(e.words || 0);
-        if (e.goal === null || e.goal === undefined) goalEl.value = "";
-        else goalEl.value = String(e.goal);
-        noteEl.value = e.note || "";
+        goalEl.value  = (e.goal === null || e.goal === undefined) ? "" : String(e.goal);
+        noteEl.value  = e.note || "";
       }
 
-      // ---------- Core ----------
+      function escapeHtml(str){
+        return String(str)
+          .replace(/&/g,"&amp;")
+          .replace(/</g,"&lt;")
+          .replace(/>/g,"&gt;")
+          .replace(/"/g,"&quot;")
+          .replace(/'/g,"&#039;");
+      }
+
+      // ------ Core ------
       function saveEntry(){
         var k = currentFormKey();
         if (!k){
           alert("Escolhe uma data.");
           return;
         }
-
         var words = safeInt(wordsEl.value);
         var goalRaw = (goalEl.value || "").trim();
         var goal = goalRaw === "" ? null : safeInt(goalRaw);
         var note = (noteEl.value || "").trim();
 
-        entries[k] = {
-          words: words,
-          goal: goal,
-          note: note
-        };
-
+        entries[k] = { words: words, goal: goal, note: note };
         render();
         loadToForm(k);
       }
@@ -361,7 +361,6 @@
           return;
         }
         if (!confirm("Apagar a entrada de " + k + "?")) return;
-
         delete entries[k];
         clearForm();
         render();
@@ -375,8 +374,7 @@
 
         for (var i=0;i<keys.length;i++){
           var e = entries[keys[i]];
-          var w = safeInt(e.words);
-          total += w;
+          total += safeInt(e.words);
           if (e.goal !== null && e.goal !== undefined) goalDays++;
         }
 
@@ -390,15 +388,6 @@
         fileNameOut.textContent = loadedFileName || "—";
 
         return keys;
-      }
-
-      function escapeHtml(str){
-        return String(str)
-          .replace(/&/g,"&amp;")
-          .replace(/</g,"&lt;")
-          .replace(/>/g,"&gt;")
-          .replace(/"/g,"&quot;")
-          .replace(/'/g,"&#039;");
       }
 
       function statusPill(words, goal){
@@ -444,12 +433,6 @@
         var H = canvas.height;
         ctx.clearRect(0,0,W,H);
 
-        // fundo sólido preto
-        ctx.save();
-        ctx.fillStyle = "#000000";
-        ctx.fillRect(0,0,W,H);
-        ctx.restore();
-
         var padL = 70, padR = 20, padT = 24, padB = 70;
         var plotW = W - padL - padR;
         var plotH = H - padT - padB;
@@ -470,8 +453,7 @@
 
         var wordsSeries = [];
         var goalSeries = [];
-        var iKey;
-        for (iKey=0;iKey<keys.length;iKey++){
+        for (var iKey=0;iKey<keys.length;iKey++){
           var e = entries[keys[iKey]];
           wordsSeries.push(safeInt(e.words));
           if (e.goal === null || e.goal === undefined) goalSeries.push(null);
@@ -479,11 +461,11 @@
         }
 
         var maxVal = 10;
-        for (iKey=0;iKey<wordsSeries.length;iKey++){
-          if (wordsSeries[iKey] > maxVal) maxVal = wordsSeries[iKey];
+        for (var j=0;j<wordsSeries.length;j++){
+          if (wordsSeries[j] > maxVal) maxVal = wordsSeries[j];
         }
-        for (iKey=0;iKey<goalSeries.length;iKey++){
-          if (goalSeries[iKey] !== null && goalSeries[iKey] > maxVal) maxVal = goalSeries[iKey];
+        for (j=0;j<goalSeries.length;j++){
+          if (goalSeries[j] !== null && goalSeries[j] > maxVal) maxVal = goalSeries[j];
         }
 
         // eixos
@@ -503,9 +485,9 @@
         ctx.font = "18px system-ui, -apple-system, Segoe UI, Roboto, Arial";
         ctx.textAlign = "right";
         ctx.textBaseline = "middle";
-        for (iKey=0;iKey<=gridY;iKey++){
-          var val = Math.round(maxVal * (1 - iKey / gridY));
-          var yLabel = padT + (plotH * iKey / gridY);
+        for (var g=0; g<=gridY; g++){
+          var val = Math.round(maxVal * (1 - g / gridY));
+          var yLabel = padT + (plotH * g / gridY);
           ctx.fillText(String(val), padL - 10, yLabel);
         }
         ctx.restore();
@@ -517,15 +499,6 @@
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText("Sem dados — adiciona uma entrada para veres o gráfico.", W/2, H/2);
-          ctx.restore();
-
-          // mesmo sem dados, watermark
-          ctx.save();
-          ctx.fillStyle = "rgba(255,255,255,0.65)";
-          ctx.font = "16px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-          ctx.textAlign = "right";
-          ctx.textBaseline = "bottom";
-          ctx.fillText("@blog_entre_sonhos", W - 16, H - 12);
           ctx.restore();
           return;
         }
@@ -539,31 +512,31 @@
           return padT + (plotH * (1 - t));
         }
 
-        // linha de palavras (laranja)
+        // linha palavras
         ctx.save();
         ctx.strokeStyle = "rgba(255,122,24,0.95)";
         ctx.lineWidth = 4;
         ctx.lineJoin = "round";
         ctx.lineCap = "round";
         ctx.beginPath();
-        for (iKey=0;iKey<keys.length;iKey++){
-          var x = xAt(iKey);
-          var y = yAt(wordsSeries[iKey]);
-          if (iKey === 0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+        for (var i=0;i<keys.length;i++){
+          var x = xAt(i);
+          var y = yAt(wordsSeries[i]);
+          if (i === 0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
         }
         ctx.stroke();
         ctx.restore();
 
-        // linha de objetivo (segmentos brancos)
+        // linha objetivo (segmentos)
         ctx.save();
         ctx.strokeStyle = "rgba(255,255,255,0.60)";
         ctx.lineWidth = 3;
-        for (iKey=0;iKey<keys.length-1;iKey++){
-          var g1 = goalSeries[iKey];
-          var g2 = goalSeries[iKey+1];
+        for (var k=0;k<keys.length-1;k++){
+          var g1 = goalSeries[k];
+          var g2 = goalSeries[k+1];
           if (g1 === null || g2 === null) continue;
-          var x1 = xAt(iKey),   y1 = yAt(g1);
-          var x2 = xAt(iKey+1), y2 = yAt(g2);
+          var x1 = xAt(k),   y1 = yAt(g1);
+          var x2 = xAt(k+1), y2 = yAt(g2);
 
           var steps = 10;
           for (var s=0;s<steps;s++){
@@ -580,17 +553,17 @@
 
         // pontos
         ctx.save();
-        for (iKey=0;iKey<keys.length;iKey++){
-          var x = xAt(iKey);
-          var y = yAt(wordsSeries[iKey]);
+        for (var p=0;p<keys.length;p++){
+          var px = xAt(p);
+          var py = yAt(wordsSeries[p]);
           ctx.fillStyle = "rgba(255,122,24,1)";
-          ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fill();
           ctx.fillStyle = "rgba(0,0,0,0.65)";
-          ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(px,py,3,0,Math.PI*2); ctx.fill();
         }
         ctx.restore();
 
-        // labels X (primeira e última data)
+        // labels X + legenda
         ctx.save();
         ctx.fillStyle = "rgba(255,255,255,0.70)";
         ctx.font = "18px system-ui, -apple-system, Segoe UI, Roboto, Arial";
@@ -602,21 +575,12 @@
         if (keys.length > 1){
           ctx.fillText(last, xAt(keys.length-1), H - padB + 18);
         }
-
-        // legenda
         ctx.textAlign = "left";
         ctx.textBaseline = "alphabetic";
         ctx.fillStyle = "rgba(255,122,24,0.95)";
         ctx.fillText("Palavras", padL, padT - 6);
         ctx.fillStyle = "rgba(255,255,255,0.70)";
         ctx.fillText("Objetivo", padL + 120, padT - 6);
-
-        // watermark @blog_entre_sonhos
-        ctx.textAlign = "right";
-        ctx.textBaseline = "bottom";
-        ctx.fillStyle = "rgba(255,255,255,0.65)";
-        ctx.font = "16px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-        ctx.fillText("@blog_entre_sonhos", W - 16, H - 12);
         ctx.restore();
       }
 
@@ -626,7 +590,7 @@
         renderChart(keys);
       }
 
-      // ---------- JSON ----------
+      // ------ JSON ------
       function exportJSON(){
         var payload = {
           app: "Entre Sonhos — Writing Tracker",
@@ -642,9 +606,10 @@
       function importJSON(file){
         var reader = new FileReader();
         reader.onload = function(){
+          var data;
           try{
-            var data = JSON.parse(String(reader.result || ""));
-          } catch(e){
+            data = JSON.parse(String(reader.result || ""));
+          }catch(e){
             alert("JSON inválido.");
             return;
           }
@@ -680,7 +645,7 @@
         a.click();
       }
 
-      // ---------- Ligações ----------
+      // ------ Ligações ------
       dateEl.value = todayISO();
 
       saveBtn.addEventListener("click", saveEntry);
@@ -706,7 +671,5 @@
       render();
     });
   </script>
-
-
 </body>
 </html>
