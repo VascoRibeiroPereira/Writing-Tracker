@@ -203,7 +203,7 @@
           <div class="stat"><div class="k">Total</div><div class="v" id="totalOut">0</div></div>
           <div class="stat"><div class="k">Média / dia</div><div class="v" id="avgOut">0</div></div>
           <div class="stat"><div class="k">Dias registados</div><div class="v" id="daysOut">0</div></div>
-          <div class="stat"><div class="k">% dias com objetivo</div><div class="v" id="goalPctOut">0%</div></div>
+          <div class="stat"><div class="k">% dias objetivo cumprido</div><div class="v" id="goalPctOut">0%</div></div>
         </div>
 
         <div class="brand">
@@ -367,28 +367,39 @@
       }
 
       function computeStats(){
-        var keys = Object.keys(entries).sort(sortDates);
-        var days = keys.length;
-        var total = 0;
-        var goalDays = 0;
+  var keys = Object.keys(entries).sort(sortDates);
+  var days = keys.length;
+  var total = 0;
 
-        for (var i=0;i<keys.length;i++){
-          var e = entries[keys[i]];
-          total += safeInt(e.words);
-          if (e.goal !== null && e.goal !== undefined) goalDays++;
-        }
+  var goalDefinedDays = 0; // dias em que puseste objetivo
+  var goalHitDays     = 0; // dias em que atingiste (ou passaste) o objetivo
 
-        var avg = days ? Math.round(total / days) : 0;
-        var goalPct = days ? Math.round((goalDays / days) * 100) : 0;
+  for (var i=0;i<keys.length;i++){
+    var e = entries[keys[i]];
+    var w = safeInt(e.words);
+    total += w;
 
-        totalOut.textContent = fmtNum(total);
-        avgOut.textContent   = fmtNum(avg);
-        daysOut.textContent  = fmtNum(days);
-        goalPctOut.textContent = goalPct + "%";
-        fileNameOut.textContent = loadedFileName || "—";
+    if (e.goal !== null && e.goal !== undefined){
+      var g = safeInt(e.goal);
+      goalDefinedDays++;
+      if (w >= g) goalHitDays++;
+    }
+  }
 
-        return keys;
-      }
+  var avg = days ? Math.round(total / days) : 0;
+  var goalPct = goalDefinedDays
+    ? Math.round((goalHitDays / goalDefinedDays) * 100)
+    : 0;
+
+  totalOut.textContent = fmtNum(total);
+  avgOut.textContent   = fmtNum(avg);
+  daysOut.textContent  = fmtNum(days);
+  goalPctOut.textContent = goalPct + "%";
+  fileNameOut.textContent = loadedFileName || "—";
+
+  return keys;
+}
+
 
       function statusPill(words, goal){
         if (goal === null || goal === undefined){
@@ -581,6 +592,14 @@
         ctx.fillText("Palavras", padL, padT - 6);
         ctx.fillStyle = "rgba(255,255,255,0.70)";
         ctx.fillText("Objetivo", padL + 120, padT - 6);
+        
+        // 👉 watermark
+        ctx.fillStyle = "rgba(255,255,255,0.45)";
+        ctx.font = "14px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "bottom";
+        ctx.fillText("@blog_entre_sonhos", W - padR, H - 10);
+        
         ctx.restore();
       }
 
