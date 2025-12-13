@@ -243,7 +243,7 @@
     </div>
   </div>
 
-  <script>
+    <script>
     document.addEventListener("DOMContentLoaded", function () {
       // ---------- Estado ----------
       var entries = {}; // { 'YYYY-MM-DD': {words: number, goal: number|null, note: string} }
@@ -581,8 +581,8 @@
         // pontos
         ctx.save();
         for (iKey=0;iKey<keys.length;iKey++){
-          x = xAt(iKey);
-          y = yAt(wordsSeries[iKey]);
+          var x = xAt(iKey);
+          var y = yAt(wordsSeries[iKey]);
           ctx.fillStyle = "rgba(255,122,24,1)";
           ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.fill();
           ctx.fillStyle = "rgba(0,0,0,0.65)";
@@ -706,5 +706,7 @@
       render();
     });
   </script>
+
+
 </body>
 </html>
