@@ -135,7 +135,7 @@
     canvas{
       width:100%;
       height:320px;
-      background: rgba(0,0,0,.18);
+      background: #000000;
       border:1px solid rgba(255,255,255,.06);
       border-radius: 16px;
       display:block;
@@ -444,14 +444,18 @@
         var H = canvas.height;
         ctx.clearRect(0,0,W,H);
 
+        // fundo sólido preto
+        ctx.save();
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0,0,W,H);
+        ctx.restore();
+
         var padL = 70, padR = 20, padT = 24, padB = 70;
         var plotW = W - padL - padR;
         var plotH = H - padT - padB;
 
-        // fundo + grelha
+        // grelha
         ctx.save();
-        ctx.fillStyle = "rgba(0,0,0,0)";
-        ctx.fillRect(0,0,W,H);
         ctx.strokeStyle = "rgba(255,255,255,0.08)";
         ctx.lineWidth = 1;
         var gridY = 5;
@@ -514,6 +518,15 @@
           ctx.textBaseline = "middle";
           ctx.fillText("Sem dados — adiciona uma entrada para veres o gráfico.", W/2, H/2);
           ctx.restore();
+
+          // mesmo sem dados, watermark
+          ctx.save();
+          ctx.fillStyle = "rgba(255,255,255,0.65)";
+          ctx.font = "16px system-ui, -apple-system, Segoe UI, Roboto, Arial";
+          ctx.textAlign = "right";
+          ctx.textBaseline = "bottom";
+          ctx.fillText("@blog_entre_sonhos", W - 16, H - 12);
+          ctx.restore();
           return;
         }
 
@@ -526,7 +539,7 @@
           return padT + (plotH * (1 - t));
         }
 
-        // linha de palavras
+        // linha de palavras (laranja)
         ctx.save();
         ctx.strokeStyle = "rgba(255,122,24,0.95)";
         ctx.lineWidth = 4;
@@ -597,94 +610,9 @@
         ctx.fillText("Palavras", padL, padT - 6);
         ctx.fillStyle = "rgba(255,255,255,0.70)";
         ctx.fillText("Objetivo", padL + 120, padT - 6);
-        ctx.restore();
-      }
 
-      function render(){
-        var keys = computeStats();
-        renderTable(keys);
-        renderChart(keys);
-      }
-
-      // ---------- JSON ----------
-      function exportJSON(){
-        var payload = {
-          app: "Entre Sonhos — Writing Tracker",
-          version: 1,
-          exportedAt: new Date().toISOString(),
-          entries: entries
-        };
-        var blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
-        var stamp = new Date().toISOString().slice(0,10);
-        downloadBlob(blob, "writing-tracker_" + stamp + ".json");
-      }
-
-      function importJSON(file){
-        var reader = new FileReader();
-        reader.onload = function(){
-          try{
-            var data = JSON.parse(String(reader.result || ""));
-          } catch(e){
-            alert("JSON inválido.");
-            return;
-          }
-          if (!data || typeof data !== "object" || typeof data.entries !== "object"){
-            alert("Formato inesperado. Esperava { entries: { 'YYYY-MM-DD': {words, goal, note} } }");
-            return;
-          }
-
-          var cleaned = {};
-          for (var key in data.entries){
-            if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) continue;
-            var v = data.entries[key] || {};
-            var words = safeInt(v.words);
-            var goal  = (v.goal === null || v.goal === undefined || v.goal === "") ? null : safeInt(v.goal);
-            var note  = v.note ? String(v.note) : "";
-            cleaned[key] = {words:words, goal:goal, note:note};
-          }
-
-          entries = cleaned;
-          loadedFileName = file.name || "importado.json";
-          render();
-
-          var keys = Object.keys(entries).sort(sortDates);
-          if (keys.length) loadToForm(keys[keys.length-1]);
-        };
-        reader.readAsText(file);
-      }
-
-      function exportPNG(){
-        var a = document.createElement("a");
-        a.download = "writing-tracker_chart_" + new Date().toISOString().slice(0,10) + ".png";
-        a.href = canvas.toDataURL("image/png");
-        a.click();
-      }
-
-      // ---------- Ligações ----------
-      dateEl.value = todayISO();
-
-      saveBtn.addEventListener("click", saveEntry);
-      clearBtn.addEventListener("click", clearForm);
-      deleteBtn.addEventListener("click", deleteEntry);
-
-      exportJsonBtn.addEventListener("click", exportJSON);
-
-      importJsonBtn.addEventListener("click", function(){
-        importFile.click();
-      });
-
-      importFile.addEventListener("change", function(e){
-        var file = e.target.files && e.target.files[0];
-        if (!file) return;
-        importJSON(file);
-        importFile.value = "";
-      });
-
-      exportPngBtn.addEventListener("click", exportPNG);
-
-      // primeiro render
-      render();
-    });
-  </script>
-</body>
-</html>
+        // watermark @blog_entre_sonhos
+        ctx.textAlign = "right";
+        ctx.textBaseline = "bottom";
+        ctx.fillStyle = "rgba(255,255,255,0.65)";
+        ctx.font = "16px syste
