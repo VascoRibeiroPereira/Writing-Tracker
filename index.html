@@ -4,59 +4,190 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" type="image/png" href="icon-192.png">
-<meta name="theme-color" content="#0b0b0d">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <meta name="theme-color" content="#0b0b0d">
   <title>Entre Sonhos — Writing Tracker</title>
   <style>
-select{
-  width:100%;
-  background: var(--panel2);
-  color: var(--text);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 12px;
-  padding:10px 12px;
-  outline:none;
-}
-select:focus{
-  border-color: rgba(255,122,24,.55);
-  box-shadow:0 0 0 3px rgba(255,122,24,.12);
-}
-.progress-wrap{
-  margin-top:10px;
-  padding:12px;
-  border-radius:14px;
-  background: rgba(0,0,0,.18);
-  border:1px solid rgba(255,255,255,.06);
-}
-.progress-head{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:8px;
-}
-.progress-bar{
-  height:12px;
-  border-radius:999px;
-  background: rgba(255,255,255,.08);
-  overflow:hidden;
-}
-.progress-fill{
-  height:100%;
-  border-radius:999px;
-  background: linear-gradient(90deg, rgba(255,122,24,.75), rgba(255,122,24,1));
-}
-.project-tag{
-  display:inline-block;
-  padding:2px 8px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:800;
-  color:var(--accent);
-  border:1px solid rgba(255,122,24,.30);
-  background: rgba(255,122,24,.08);
-}
+    :root{
+      --bg:#0b0b0d;
+      --panel:#111116;
+      --panel2:#14141b;
+      --text:#f2f2f3;
+      --muted:#b8b8c2;
+      --accent:#ff7a18;
+      --good:#3ddc97;
+      --bad:#ff5b5b;
+      --warn:#ffcc66;
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 500px at 20% -10%, rgba(255,122,24,.18), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(255,122,24,.12), transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px; margin:0 auto; padding:22px}
+    header{
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between;
+      margin-bottom:18px;
+    }
+    h1{font-size:22px; margin:0}
+    .sub{color:var(--muted); margin-top:6px; font-size:14px}
+    .grid{
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:16px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .card h2{font-size:16px; margin:0 0 10px 0}
+    label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
+    input, textarea, select{
+      width:100%;
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      padding:10px 12px;
+      outline:none;
+    }
+    textarea{min-height:88px; resize:vertical}
+    input:focus, textarea:focus, select:focus{
+      border-color: rgba(255,122,24,.55);
+      box-shadow:0 0 0 3px rgba(255,122,24,.12);
+    }
+    .row{display:flex; gap:10px}
+    .row > *{flex:1}
+    .btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    button{
+      appearance:none; border:0;
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.08);
+      font-weight:600;
+    }
+    button:hover{background: rgba(255,255,255,.09)}
+    .primary{background: rgba(255,122,24,.20); border-color: rgba(255,122,24,.35)}
+    .primary:hover{background: rgba(255,122,24,.28)}
+    .danger{background: rgba(255,91,91,.16); border-color: rgba(255,91,91,.30)}
+    .danger:hover{background: rgba(255,91,91,.22)}
+    .hint{
+      color:var(--muted); font-size:12px;
+      margin-top:10px; line-height:1.4;
+    }
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:10px; margin-top:10px;
+    }
+    @media (max-width: 900px){
+      .stats{grid-template-columns: repeat(2, 1fr)}
+    }
+    .stat{
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: 14px;
+      padding:10px 12px;
+    }
+    .stat .k{font-size:11px; color:var(--muted)}
+    .stat .v{font-size:18px; font-weight:800; margin-top:4px}
+    .brand{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      margin-top:10px; padding-top:10px;
+      border-top:1px solid rgba(255,255,255,.06);
+      color:var(--muted); font-size:12px;
+    }
+    table{
+      width:100%; border-collapse:collapse; margin-top:12px; font-size:13px;
+      overflow:hidden; border-radius: 14px;
+    }
+    th, td{
+      padding:10px 10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      vertical-align:top;
+    }
+    th{
+      color:var(--muted); font-weight:700;
+      text-align:left; background: rgba(0,0,0,.20);
+    }
+    tr:hover td{background: rgba(255,255,255,.03); cursor:pointer}
+    .pill{
+      display:inline-block; padding:2px 8px;
+      border-radius:999px; font-size:11px; font-weight:800;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .ok{color:var(--good); border-color: rgba(61,220,151,.35); background: rgba(61,220,151,.08)}
+    .miss{color:var(--warn); border-color: rgba(255,204,102,.35); background: rgba(255,204,102,.07)}
+    .bad{color:var(--bad); border-color: rgba(255,91,91,.35); background: rgba(255,91,91,.07)}
+    canvas{
+      width:100%;
+      height:320px;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius: 16px;
+      display:block;
+    }
+    .topline{
+      display:flex; align-items:flex-end;
+      justify-content:space-between; gap:10px;
+      flex-wrap:wrap;
+    }
+    .filemeta{color:var(--muted); font-size:12px}
+    .small{font-size:12px; color:var(--muted)}
+    .progress-wrap{
+      margin-top:10px;
+      padding:12px;
+      border-radius:14px;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .progress-head{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+    .progress-bar{
+      height:12px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+    .progress-fill{
+      height:100%;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(255,122,24,.75), rgba(255,122,24,1));
+    }
+    .project-tag{
+      display:inline-block;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      color:var(--accent);
+      border:1px solid rgba(255,122,24,.30);
+      background: rgba(255,122,24,.08);
+      margin-bottom:6px;
+    }
   </style>
 </head>
 <body>
@@ -64,7 +195,7 @@ select:focus{
     <header>
       <div>
         <h1>Entre Sonhos — Writing Tracker</h1>
-        <div class="sub">Regista palavras por dia • objetivo flexível • gráfico + export/import JSON</div>
+        <div class="sub">Regista palavras por dia • projetos e metas • streak • gráfico + export/import JSON</div>
       </div>
       <div class="small">Marca: <strong>@vasco_entre_sonhos</strong></div>
     </header>
@@ -78,12 +209,33 @@ select:focus{
 
         <div class="row">
           <div>
+            <label for="project">Projeto</label>
+            <select id="project"></select>
+          </div>
+          <div>
             <label for="words">Palavras escritas</label>
             <input id="words" type="number" min="0" step="1" placeholder="ex.: 850" />
           </div>
+        </div>
+
+        <div class="row">
           <div>
             <label for="goal">Objetivo do dia</label>
             <input id="goal" type="number" min="0" step="1" placeholder="ex.: 1000" />
+          </div>
+          <div>
+            <label for="projectTarget">Meta do projeto</label>
+            <input id="projectTarget" type="number" min="0" step="1" placeholder="ex.: 85000" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="newProjectName">Novo projeto</label>
+            <input id="newProjectName" type="text" placeholder="ex.: O Sonho" />
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <button id="addProjectBtn" style="width:100%">Adicionar projeto</button>
           </div>
         </div>
 
@@ -103,6 +255,11 @@ select:focus{
           <button id="exportPngBtn">Exportar gráfico (PNG)</button>
         </div>
 
+        <div class="btns" style="margin-top:10px">
+          <button id="copySocialBtn">Copiar caption social</button>
+          <button id="downloadSocialBtn">Descarregar caption (.txt)</button>
+        </div>
+
         <div class="hint">
           Dica: usa <strong>Importar JSON</strong> para recuperar dados noutro dispositivo.
           O ficheiro é a “memória” da app.
@@ -113,7 +270,13 @@ select:focus{
           <div class="stat"><div class="k">Média / dia</div><div class="v" id="avgOut">0</div></div>
           <div class="stat"><div class="k">Dias registados</div><div class="v" id="daysOut">0</div></div>
           <div class="stat"><div class="k">% dias objetivo cumprido</div><div class="v" id="goalPctOut">0%</div></div>
+          <div class="stat"><div class="k">Streak atual</div><div class="v" id="streakOut">0</div></div>
+          <div class="stat"><div class="k">Melhor streak</div><div class="v" id="bestStreakOut">0</div></div>
+          <div class="stat"><div class="k">Projeto atual</div><div class="v" id="currentProjectOut">—</div></div>
+          <div class="stat"><div class="k">Progresso projeto</div><div class="v" id="projectProgressOut">—</div></div>
         </div>
+
+        <div id="projectProgressBox"></div>
 
         <div class="brand">
           <span>Entre Sonhos</span>
@@ -122,88 +285,31 @@ select:focus{
       </section>
 
       <section class="card">
-       <section class="card">
-  <h2>Adicionar / editar entrada</h2>
+        <div class="topline">
+          <div>
+            <h2 style="margin:0">Evolução</h2>
+            <div class="small">Clique numa linha da tabela para carregar/editar essa entrada.</div>
+          </div>
+        </div>
 
-  <label for="date">Data</label>
-  <input id="date" type="date" />
+        <div style="margin-top:12px">
+          <canvas id="chart" width="1200" height="600"></canvas>
+        </div>
 
-  <div class="row">
-    <div>
-      <label for="project">Projeto</label>
-      <select id="project"></select>
-    </div>
-    <div>
-      <label for="words">Palavras escritas</label>
-      <input id="words" type="number" min="0" step="1" placeholder="ex.: 850" />
-    </div>
-  </div>
-
-  <div class="row">
-    <div>
-      <label for="goal">Objetivo do dia</label>
-      <input id="goal" type="number" min="0" step="1" placeholder="ex.: 1000" />
-    </div>
-    <div>
-      <label for="projectTarget">Meta do projeto</label>
-      <input id="projectTarget" type="number" min="0" step="1" placeholder="ex.: 85000" />
-    </div>
-  </div>
-
-  <div class="row">
-    <div>
-      <label for="newProjectName">Novo projeto</label>
-      <input id="newProjectName" type="text" placeholder="ex.: O Sonho 2" />
-    </div>
-    <div style="display:flex; align-items:flex-end;">
-      <button id="addProjectBtn" style="width:100%">Adicionar projeto</button>
-    </div>
-  </div>
-
-  <label for="note">Nota (opcional)</label>
-  <textarea id="note" placeholder="Uma linha sobre como correu, o que mudas amanhã, etc."></textarea>
-
-  <div class="btns">
-    <button class="primary" id="saveBtn">Guardar entrada</button>
-    <button id="clearBtn">Limpar</button>
-    <button class="danger" id="deleteBtn">Apagar esta entrada</button>
-  </div>
-
-  <div class="btns" style="margin-top:10px">
-    <button id="exportJsonBtn">Exportar JSON</button>
-    <input id="importFile" type="file" accept="application/json" style="display:none" />
-    <button id="importJsonBtn" type="button">Importar JSON</button>
-    <button id="exportPngBtn">Exportar gráfico (PNG)</button>
-  </div>
-
-  <div class="btns" style="margin-top:10px">
-    <button id="copySocialBtn">Copiar caption social</button>
-    <button id="downloadSocialBtn">Descarregar caption (.txt)</button>
-  </div>
-
-  <div class="hint">
-    Dica: usa <strong>Importar JSON</strong> para recuperar dados noutro dispositivo.
-    O ficheiro é a “memória” da app.
-  </div>
-
-  <div class="stats">
-    <div class="stat"><div class="k">Total</div><div class="v" id="totalOut">0</div></div>
-    <div class="stat"><div class="k">Média / dia</div><div class="v" id="avgOut">0</div></div>
-    <div class="stat"><div class="k">Dias registados</div><div class="v" id="daysOut">0</div></div>
-    <div class="stat"><div class="k">% dias objetivo cumprido</div><div class="v" id="goalPctOut">0%</div></div>
-    <div class="stat"><div class="k">Streak atual</div><div class="v" id="streakOut">0</div></div>
-    <div class="stat"><div class="k">Melhor streak</div><div class="v" id="bestStreakOut">0</div></div>
-    <div class="stat"><div class="k">Projeto atual</div><div class="v" id="currentProjectOut">—</div></div>
-    <div class="stat"><div class="k">Progresso projeto</div><div class="v" id="projectProgressOut">—</div></div>
-  </div>
-
-  <div id="projectProgressBox" style="margin-top:12px"></div>
-
-  <div class="brand">
-    <span>Entre Sonhos</span>
-    <span class="filemeta">Ficheiro: <span id="fileNameOut">—</span></span>
-  </div>
-</section>
+        <div style="overflow:auto; margin-top:10px">
+          <table>
+            <thead>
+              <tr>
+                <th style="min-width:110px">Data</th>
+                <th style="min-width:90px">Palavras</th>
+                <th style="min-width:90px">Objetivo</th>
+                <th style="min-width:110px">Estado</th>
+                <th>Projeto / Nota</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
       </section>
     </div>
   </div>
@@ -211,30 +317,42 @@ select:focus{
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // ------ Estado ------
-      var entries = {}; // { 'YYYY-MM-DD': {words, goal, note} }
+      var entries = {}; // { 'YYYY-MM-DD': {words, goal, note, project} }
+      var projects = { "Geral": { target: null } };
       var loadedFileName = "—";
 
       // ------ Helpers ------
       function $(id){ return document.getElementById(id); }
 
       var dateEl = $("date");
+      var projectEl = $("project");
       var wordsEl = $("words");
       var goalEl  = $("goal");
+      var projectTargetEl = $("projectTarget");
+      var newProjectNameEl = $("newProjectName");
       var noteEl  = $("note");
 
       var saveBtn   = $("saveBtn");
       var clearBtn  = $("clearBtn");
       var deleteBtn = $("deleteBtn");
+      var addProjectBtn = $("addProjectBtn");
 
       var exportJsonBtn = $("exportJsonBtn");
       var importJsonBtn = $("importJsonBtn");
       var importFile    = $("importFile");
       var exportPngBtn  = $("exportPngBtn");
+      var copySocialBtn = $("copySocialBtn");
+      var downloadSocialBtn = $("downloadSocialBtn");
 
       var totalOut   = $("totalOut");
       var avgOut     = $("avgOut");
       var daysOut    = $("daysOut");
       var goalPctOut = $("goalPctOut");
+      var streakOut  = $("streakOut");
+      var bestStreakOut = $("bestStreakOut");
+      var currentProjectOut = $("currentProjectOut");
+      var projectProgressOut = $("projectProgressOut");
+      var projectProgressBox = $("projectProgressBox");
       var fileNameOut= $("fileNameOut");
 
       var tbody  = $("tbody");
@@ -277,20 +395,10 @@ select:focus{
         return (dateEl.value || "").trim();
       }
 
-      function clearForm(){
-        dateEl.value = todayISO();
-        wordsEl.value = "";
-        goalEl.value  = "";
-        noteEl.value  = "";
-      }
-
-      function loadToForm(dateKey){
-        var e = entries[dateKey];
-        if (!e) return;
-        dateEl.value = dateKey;
-        wordsEl.value = String(e.words || 0);
-        goalEl.value  = (e.goal === null || e.goal === undefined) ? "" : String(e.goal);
-        noteEl.value  = e.note || "";
+      function daysBetween(a, b){
+        var da = new Date(a + "T00:00:00");
+        var db = new Date(b + "T00:00:00");
+        return Math.round((db - da) / 86400000);
       }
 
       function escapeHtml(str){
@@ -302,19 +410,116 @@ select:focus{
           .replace(/'/g,"&#039;");
       }
 
+      function ensureDefaultProject(){
+        if (!projects || typeof projects !== "object") projects = {};
+        if (!projects["Geral"]) projects["Geral"] = { target: null };
+      }
+
+      function renderProjectOptions(){
+        ensureDefaultProject();
+
+        var names = Object.keys(projects).sort(function(a,b){
+          if (a === "Geral") return -1;
+          if (b === "Geral") return 1;
+          return a.localeCompare(b, "pt");
+        });
+
+        projectEl.innerHTML = "";
+
+        for (var i=0; i<names.length; i++){
+          var opt = document.createElement("option");
+          opt.value = names[i];
+          opt.textContent = names[i];
+          projectEl.appendChild(opt);
+        }
+
+        if (!projectEl.value || !projects[projectEl.value]){
+          projectEl.value = names[0];
+        }
+
+        syncProjectTargetInput();
+      }
+
+      function syncProjectTargetInput(){
+        var name = projectEl.value || "Geral";
+        var target = projects[name] ? projects[name].target : null;
+        projectTargetEl.value = (target === null || target === undefined) ? "" : String(target);
+      }
+
+      function currentProjectName(){
+        var p = (projectEl.value || "").trim();
+        return p && projects[p] ? p : "Geral";
+      }
+
+      function clearForm(){
+        dateEl.value = todayISO();
+        wordsEl.value = "";
+        goalEl.value  = "";
+        noteEl.value  = "";
+        if (projectEl.options.length){
+          projectEl.value = projectEl.value || projectEl.options[0].value;
+        }
+        syncProjectTargetInput();
+      }
+
+      function loadToForm(dateKey){
+        var e = entries[dateKey];
+        if (!e) return;
+
+        dateEl.value = dateKey;
+        wordsEl.value = String(e.words || 0);
+        goalEl.value  = (e.goal === null || e.goal === undefined) ? "" : String(e.goal);
+        noteEl.value  = e.note || "";
+        projectEl.value = (e.project && projects[e.project]) ? e.project : "Geral";
+        syncProjectTargetInput();
+      }
+
       // ------ Core ------
+      function addProject(){
+        var name = (newProjectNameEl.value || "").trim();
+        if (!name){
+          alert("Escreve o nome do projeto.");
+          return;
+        }
+
+        if (projects[name]){
+          alert("Esse projeto já existe.");
+          projectEl.value = name;
+          syncProjectTargetInput();
+          return;
+        }
+
+        projects[name] = { target: null };
+        renderProjectOptions();
+        projectEl.value = name;
+        syncProjectTargetInput();
+        newProjectNameEl.value = "";
+      }
+
       function saveEntry(){
         var k = currentFormKey();
         if (!k){
           alert("Escolhe uma data.");
           return;
         }
+
         var words = safeInt(wordsEl.value);
         var goalRaw = (goalEl.value || "").trim();
         var goal = goalRaw === "" ? null : safeInt(goalRaw);
         var note = (noteEl.value || "").trim();
+        var project = currentProjectName();
 
-        entries[k] = { words: words, goal: goal, note: note };
+        var projectTargetRaw = (projectTargetEl.value || "").trim();
+        projects[project].target = projectTargetRaw === "" ? null : safeInt(projectTargetRaw);
+
+        entries[k] = {
+          words: words,
+          goal: goal,
+          note: note,
+          project: project
+        };
+
+        renderProjectOptions();
         render();
         loadToForm(k);
       }
@@ -332,40 +537,148 @@ select:focus{
         render();
       }
 
+      function computeStreak(keys){
+        if (!keys.length) return { current: 0, best: 0 };
+
+        var streaks = [];
+        var currentRun = 1;
+
+        for (var i=1; i<keys.length; i++){
+          var diff = daysBetween(keys[i-1], keys[i]);
+          if (diff === 1){
+            currentRun++;
+          } else {
+            streaks.push(currentRun);
+            currentRun = 1;
+          }
+        }
+        streaks.push(currentRun);
+
+        var best = 0;
+        for (var j=0; j<streaks.length; j++){
+          if (streaks[j] > best) best = streaks[j];
+        }
+
+        var current = 0;
+        var today = todayISO();
+        var last = keys[keys.length - 1];
+        var diffToday = daysBetween(last, today);
+
+        if (diffToday === 0 || diffToday === 1){
+          current = streaks[streaks.length - 1];
+        } else {
+          current = 0;
+        }
+
+        return { current: current, best: best };
+      }
+
+      function getProjectTotals(){
+        var totals = {};
+
+        var names = Object.keys(projects);
+        for (var i=0; i<names.length; i++){
+          totals[names[i]] = 0;
+        }
+
+        var keys = Object.keys(entries);
+        for (var j=0; j<keys.length; j++){
+          var e = entries[keys[j]];
+          var p = e.project && projects[e.project] ? e.project : "Geral";
+          if (totals[p] === undefined) totals[p] = 0;
+          totals[p] += safeInt(e.words);
+        }
+
+        return totals;
+      }
+
+      function currentProjectProgressData(){
+        var p = currentProjectName();
+        var totals = getProjectTotals();
+        var totalWords = totals[p] || 0;
+        var target = projects[p] ? projects[p].target : null;
+        var pct = (target && target > 0)
+          ? Math.min(100, Math.round((totalWords / target) * 100))
+          : null;
+
+        return {
+          name: p,
+          totalWords: totalWords,
+          target: target,
+          pct: pct
+        };
+      }
+
+      function renderProjectProgressBox(){
+        var d = currentProjectProgressData();
+        currentProjectOut.textContent = d.name;
+
+        if (!d.target){
+          projectProgressOut.textContent = fmtNum(d.totalWords) + " palavras";
+          projectProgressBox.innerHTML =
+            '<div class="progress-wrap">' +
+              '<div class="progress-head">' +
+                '<strong>' + escapeHtml(d.name) + '</strong>' +
+                '<span class="small">Sem meta definida</span>' +
+              '</div>' +
+              '<div class="small">' + fmtNum(d.totalWords) + ' palavras acumuladas</div>' +
+            '</div>';
+          return;
+        }
+
+        projectProgressOut.textContent = d.pct + "%";
+        projectProgressBox.innerHTML =
+          '<div class="progress-wrap">' +
+            '<div class="progress-head">' +
+              '<strong>' + escapeHtml(d.name) + '</strong>' +
+              '<span class="small">' + fmtNum(d.totalWords) + ' / ' + fmtNum(d.target) + ' palavras</span>' +
+            '</div>' +
+            '<div class="progress-bar">' +
+              '<div class="progress-fill" style="width:' + d.pct + '%"></div>' +
+            '</div>' +
+            '<div class="small" style="margin-top:8px">' + d.pct + '% concluído</div>' +
+          '</div>';
+      }
+
       function computeStats(){
-  var keys = Object.keys(entries).sort(sortDates);
-  var days = keys.length;
-  var total = 0;
+        var keys = Object.keys(entries).sort(sortDates);
+        var days = keys.length;
+        var total = 0;
 
-  var goalDefinedDays = 0; // dias em que puseste objetivo
-  var goalHitDays     = 0; // dias em que atingiste (ou passaste) o objetivo
+        var goalDefinedDays = 0;
+        var goalHitDays     = 0;
 
-  for (var i=0;i<keys.length;i++){
-    var e = entries[keys[i]];
-    var w = safeInt(e.words);
-    total += w;
+        for (var i=0; i<keys.length; i++){
+          var e = entries[keys[i]];
+          var w = safeInt(e.words);
+          total += w;
 
-    if (e.goal !== null && e.goal !== undefined){
-      var g = safeInt(e.goal);
-      goalDefinedDays++;
-      if (w >= g) goalHitDays++;
-    }
-  }
+          if (e.goal !== null && e.goal !== undefined){
+            var g = safeInt(e.goal);
+            goalDefinedDays++;
+            if (w >= g) goalHitDays++;
+          }
+        }
 
-  var avg = days ? Math.round(total / days) : 0;
-  var goalPct = goalDefinedDays
-    ? Math.round((goalHitDays / goalDefinedDays) * 100)
-    : 0;
+        var avg = days ? Math.round(total / days) : 0;
+        var goalPct = goalDefinedDays
+          ? Math.round((goalHitDays / goalDefinedDays) * 100)
+          : 0;
 
-  totalOut.textContent = fmtNum(total);
-  avgOut.textContent   = fmtNum(avg);
-  daysOut.textContent  = fmtNum(days);
-  goalPctOut.textContent = goalPct + "%";
-  fileNameOut.textContent = loadedFileName || "—";
+        var streakData = computeStreak(keys);
 
-  return keys;
-}
+        totalOut.textContent = fmtNum(total);
+        avgOut.textContent   = fmtNum(avg);
+        daysOut.textContent  = fmtNum(days);
+        goalPctOut.textContent = goalPct + "%";
+        streakOut.textContent = String(streakData.current);
+        bestStreakOut.textContent = String(streakData.best);
+        fileNameOut.textContent = loadedFileName || "—";
 
+        renderProjectProgressBox();
+
+        return keys;
+      }
 
       function statusPill(words, goal){
         if (goal === null || goal === undefined){
@@ -380,12 +693,19 @@ select:focus{
 
       function renderTable(keys){
         tbody.innerHTML = "";
-        for (var i=0;i<keys.length;i++){
+
+        for (var i=0; i<keys.length; i++){
           var k = keys[i];
           var e = entries[k];
           var words = safeInt(e.words);
           var goal = (e.goal === null || e.goal === undefined) ? null : safeInt(e.goal);
           var note = (e.note || "").trim();
+          var project = e.project && projects[e.project] ? e.project : "Geral";
+
+          var noteHtml = "<span class='project-tag'>" + escapeHtml(project) + "</span>";
+          if (note){
+            noteHtml += "<br>" + escapeHtml(note);
+          }
 
           var tr = document.createElement("tr");
           tr.innerHTML =
@@ -393,7 +713,7 @@ select:focus{
             "<td>" + fmtNum(words) + "</td>" +
             "<td>" + (goal === null ? "—" : fmtNum(goal)) + "</td>" +
             "<td>" + statusPill(words, goal) + "</td>" +
-            "<td>" + escapeHtml(note) + "</td>";
+            "<td>" + noteHtml + "</td>";
 
           (function(dateKey){
             tr.addEventListener("click", function(){
@@ -414,7 +734,6 @@ select:focus{
         var plotW = W - padL - padR;
         var plotH = H - padT - padB;
 
-        // grelha
         ctx.save();
         ctx.strokeStyle = "rgba(255,255,255,0.08)";
         ctx.lineWidth = 1;
@@ -445,7 +764,6 @@ select:focus{
           if (goalSeries[j] !== null && goalSeries[j] > maxVal) maxVal = goalSeries[j];
         }
 
-        // eixos
         ctx.save();
         ctx.strokeStyle = "rgba(255,255,255,0.18)";
         ctx.lineWidth = 2;
@@ -456,7 +774,6 @@ select:focus{
         ctx.stroke();
         ctx.restore();
 
-        // labels Y
         ctx.save();
         ctx.fillStyle = "rgba(255,255,255,0.70)";
         ctx.font = "18px system-ui, -apple-system, Segoe UI, Roboto, Arial";
@@ -489,7 +806,6 @@ select:focus{
           return padT + (plotH * (1 - t));
         }
 
-        // linha palavras
         ctx.save();
         ctx.strokeStyle = "rgba(255,122,24,0.95)";
         ctx.lineWidth = 4;
@@ -504,7 +820,6 @@ select:focus{
         ctx.stroke();
         ctx.restore();
 
-        // linha objetivo (segmentos)
         ctx.save();
         ctx.strokeStyle = "rgba(255,255,255,0.60)";
         ctx.lineWidth = 3;
@@ -528,7 +843,6 @@ select:focus{
         }
         ctx.restore();
 
-        // pontos
         ctx.save();
         for (var p=0;p<keys.length;p++){
           var px = xAt(p);
@@ -540,7 +854,6 @@ select:focus{
         }
         ctx.restore();
 
-        // labels X + legenda
         ctx.save();
         ctx.fillStyle = "rgba(255,255,255,0.70)";
         ctx.font = "18px system-ui, -apple-system, Segoe UI, Roboto, Arial";
@@ -558,15 +871,76 @@ select:focus{
         ctx.fillText("Palavras", padL, padT - 6);
         ctx.fillStyle = "rgba(255,255,255,0.70)";
         ctx.fillText("Objetivo", padL + 120, padT - 6);
-        
-        // 👉 watermark
+
         ctx.fillStyle = "rgba(255,255,255,0.45)";
         ctx.font = "14px system-ui, -apple-system, Segoe UI, Roboto, Arial";
         ctx.textAlign = "right";
         ctx.textBaseline = "bottom";
         ctx.fillText("@vasco_entre_sonhos", W - padR, H - 10);
-        
         ctx.restore();
+      }
+
+      function buildSocialCaption(){
+        var d = currentProjectProgressData();
+        var keys = Object.keys(entries).sort(sortDates);
+        var streakData = computeStreak(keys);
+        var todayKey = todayISO();
+        var todayEntry = entries[todayKey];
+        var wordsToday = todayEntry ? safeInt(todayEntry.words) : 0;
+
+        var lines = [];
+        lines.push("Hoje escrevi " + fmtNum(wordsToday) + " palavras ✍️");
+        lines.push("");
+        lines.push("🔥 Streak atual: " + streakData.current + " dias");
+        lines.push("📚 Projeto: " + d.name);
+
+        if (d.target){
+          lines.push("🎯 Progresso: " + fmtNum(d.totalWords) + " / " + fmtNum(d.target) + " palavras (" + d.pct + "%)");
+        } else {
+          lines.push("📝 Total acumulado no projeto: " + fmtNum(d.totalWords) + " palavras");
+        }
+
+        if (todayEntry && todayEntry.note){
+          lines.push("");
+          lines.push("Nota de hoje: " + todayEntry.note);
+        }
+
+        lines.push("");
+        lines.push("#amwriting #writingcommunity #writerslife #escrita");
+        lines.push("@vasco_entre_sonhos");
+
+        return lines.join("\n");
+      }
+
+      function fallbackCopy(text){
+        var ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        alert("Caption copiada.");
+      }
+
+      function copySocialCaption(){
+        var text = buildSocialCaption();
+
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(function(){
+            alert("Caption copiada.");
+          }).catch(function(){
+            fallbackCopy(text);
+          });
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function downloadSocialCaption(){
+        var text = buildSocialCaption();
+        var blob = new Blob([text], {type:"text/plain;charset=utf-8"});
+        var stamp = new Date().toISOString().slice(0,10);
+        downloadBlob(blob, "writing-social-caption_" + stamp + ".txt");
       }
 
       function render(){
@@ -579,8 +953,9 @@ select:focus{
       function exportJSON(){
         var payload = {
           app: "Entre Sonhos — Writing Tracker",
-          version: 1,
+          version: 2,
           exportedAt: new Date().toISOString(),
+          projects: projects,
           entries: entries
         };
         var blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
@@ -598,27 +973,55 @@ select:focus{
             alert("JSON inválido.");
             return;
           }
+
           if (!data || typeof data !== "object" || typeof data.entries !== "object"){
-            alert("Formato inesperado. Esperava { entries: { 'YYYY-MM-DD': {words, goal, note} } }");
+            alert("Formato inesperado.");
             return;
           }
 
-          var cleaned = {};
+          var cleanedProjects = { "Geral": { target: null } };
+
+          if (data.projects && typeof data.projects === "object"){
+            for (var pn in data.projects){
+              if (!pn) continue;
+              var t = data.projects[pn] && data.projects[pn].target;
+              cleanedProjects[pn] = {
+                target: (t === null || t === undefined || t === "") ? null : safeInt(t)
+              };
+            }
+          }
+
+          var cleanedEntries = {};
           for (var key in data.entries){
             if (!/^\d{4}-\d{2}-\d{2}$/.test(key)) continue;
             var v = data.entries[key] || {};
             var words = safeInt(v.words);
             var goal  = (v.goal === null || v.goal === undefined || v.goal === "") ? null : safeInt(v.goal);
             var note  = v.note ? String(v.note) : "";
-            cleaned[key] = {words:words, goal:goal, note:note};
+            var project = v.project ? String(v.project) : "Geral";
+
+            if (!cleanedProjects[project]){
+              cleanedProjects[project] = { target: null };
+            }
+
+            cleanedEntries[key] = {
+              words: words,
+              goal: goal,
+              note: note,
+              project: project
+            };
           }
 
-          entries = cleaned;
+          projects = cleanedProjects;
+          entries = cleanedEntries;
           loadedFileName = file.name || "importado.json";
+
+          renderProjectOptions();
           render();
 
           var keys = Object.keys(entries).sort(sortDates);
           if (keys.length) loadToForm(keys[keys.length-1]);
+          else clearForm();
         };
         reader.readAsText(file);
       }
@@ -632,10 +1035,15 @@ select:focus{
 
       // ------ Ligações ------
       dateEl.value = todayISO();
+      renderProjectOptions();
+      clearForm();
 
       saveBtn.addEventListener("click", saveEntry);
       clearBtn.addEventListener("click", clearForm);
       deleteBtn.addEventListener("click", deleteEntry);
+      addProjectBtn.addEventListener("click", addProject);
+
+      projectEl.addEventListener("change", syncProjectTargetInput);
 
       exportJsonBtn.addEventListener("click", exportJSON);
 
@@ -651,8 +1059,9 @@ select:focus{
       });
 
       exportPngBtn.addEventListener("click", exportPNG);
+      copySocialBtn.addEventListener("click", copySocialCaption);
+      downloadSocialBtn.addEventListener("click", downloadSocialCaption);
 
-      // primeiro render
       render();
     });
   </script>
