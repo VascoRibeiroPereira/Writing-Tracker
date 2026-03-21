@@ -20,6 +20,7 @@
       --bad:#ff5b5b;
       --warn:#ffcc66;
       --radius:16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
     }
     *{box-sizing:border-box}
     body{
@@ -33,27 +34,28 @@
     }
     a{color:var(--accent); text-decoration:none}
     a:hover{text-decoration:underline}
-    .wrap{max-width:1100px; margin:0 auto; padding:22px}
+    .wrap{max-width:1280px; margin:0 auto; padding:22px}
     header{
       display:flex; gap:14px; align-items:flex-start; justify-content:space-between;
-      margin-bottom:18px;
+      margin-bottom:18px; flex-wrap:wrap;
     }
     h1{font-size:22px; margin:0}
     .sub{color:var(--muted); margin-top:6px; font-size:14px}
     .grid{
       display:grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 380px 1fr;
       gap:16px;
     }
-    @media (max-width: 900px){
+    @media (max-width: 1024px){
       .grid{grid-template-columns:1fr}
     }
+    .stack{display:grid; gap:16px}
     .card{
       background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
       border: 1px solid rgba(255,255,255,.06);
       border-radius: var(--radius);
       padding:16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      box-shadow: var(--shadow);
     }
     .card h2{font-size:16px; margin:0 0 10px 0}
     label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
@@ -89,16 +91,14 @@
     .primary:hover{background: rgba(255,122,24,.28)}
     .danger{background: rgba(255,91,91,.16); border-color: rgba(255,91,91,.30)}
     .danger:hover{background: rgba(255,91,91,.22)}
-    .hint{
-      color:var(--muted); font-size:12px;
-      margin-top:10px; line-height:1.4;
-    }
+    .ghost{background: rgba(255,255,255,.04)}
+    .hint{color:var(--muted); font-size:12px; margin-top:10px; line-height:1.45}
     .stats{
       display:grid;
       grid-template-columns: repeat(4, 1fr);
       gap:10px; margin-top:10px;
     }
-    @media (max-width: 900px){
+    @media (max-width: 1200px){
       .stats{grid-template-columns: repeat(2, 1fr)}
     }
     .stat{
@@ -114,6 +114,7 @@
       margin-top:10px; padding-top:10px;
       border-top:1px solid rgba(255,255,255,.06);
       color:var(--muted); font-size:12px;
+      flex-wrap:wrap;
     }
     table{
       width:100%; border-collapse:collapse; margin-top:12px; font-size:13px;
@@ -186,7 +187,99 @@
       color:var(--accent);
       border:1px solid rgba(255,122,24,.30);
       background: rgba(255,122,24,.08);
-      margin-bottom:6px;
+    }
+    .heatmap-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .heatmap-grid{
+      display:grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap:8px;
+    }
+    .dayhead{
+      text-align:center;
+      font-size:11px;
+      color:var(--muted);
+      padding-bottom:2px;
+    }
+    .heatcell{
+      aspect-ratio:1/1;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      background: rgba(255,255,255,.02);
+    }
+    .heatcell.blank{
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .heatcell:hover{
+      transform:translateY(-1px);
+      border-color: rgba(255,122,24,.35);
+    }
+    .heatcell.active{
+      outline:2px solid rgba(255,122,24,.40);
+      outline-offset:1px;
+    }
+    .lvl0{background: rgba(255,255,255,.02)}
+    .lvl1{background: rgba(255,122,24,.12)}
+    .lvl2{background: rgba(255,122,24,.22)}
+    .lvl3{background: rgba(255,122,24,.36)}
+    .lvl4{background: rgba(255,122,24,.55)}
+    .heatmeta{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+      min-height:42px;
+    }
+    .legend{
+      display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-top:10px;
+      color:var(--muted); font-size:12px;
+    }
+    .legend i{
+      width:14px; height:14px; border-radius:4px; display:inline-block;
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .milestone-list{
+      display:grid; gap:10px;
+    }
+    .mile{
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:12px;
+    }
+    .mile strong{display:block; margin-bottom:4px}
+    .mile .small{display:block}
+    .forecast-wrap{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap:10px;
+    }
+    @media (max-width: 600px){
+      .forecast-wrap{grid-template-columns:1fr}
+    }
+    .inline-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 8px;
+      border-radius:999px;
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      font-size:12px;
+      border:1px solid rgba(255,255,255,.08);
     }
   </style>
 </head>
@@ -195,14 +288,14 @@
     <header>
       <div>
         <h1>Entre Sonhos — Writing Tracker</h1>
-        <div class="sub">Regista palavras por dia • projetos e metas • streak • gráfico + export/import JSON</div>
+        <div class="sub">Fase 1 completa • projetos • streak • heatmap • milestones • exports sociais • previsão</div>
       </div>
       <div class="small">Marca: <strong>@vasco_entre_sonhos</strong></div>
     </header>
 
     <div class="grid">
       <section class="card">
-        <h2>Adicionar / acumular entrada</h2>
+        <h2>Adicionar / editar</h2>
 
         <label for="date">Data</label>
         <input id="date" type="date" />
@@ -213,19 +306,36 @@
             <select id="project"></select>
           </div>
           <div>
-            <label for="words">Palavras escritas</label>
-            <input id="words" type="number" min="0" step="1" placeholder="ex.: 850" />
+            <label for="entryMode">Modo</label>
+            <select id="entryMode">
+              <option value="add">Adicionar sessão</option>
+              <option value="edit">Editar agregado</option>
+            </select>
           </div>
         </div>
 
         <div class="row">
           <div>
+            <label for="words">Palavras escritas</label>
+            <input id="words" type="number" min="0" step="1" placeholder="ex.: 850" />
+          </div>
+          <div>
             <label for="goal">Objetivo do dia (para este projeto)</label>
             <input id="goal" type="number" min="0" step="1" placeholder="ex.: 1000" />
           </div>
+        </div>
+
+        <div class="row">
           <div>
             <label for="projectTarget">Meta total do projeto</label>
             <input id="projectTarget" type="number" min="0" step="1" placeholder="ex.: 85000" />
+          </div>
+          <div>
+            <label for="chartMode">Gráfico</label>
+            <select id="chartMode">
+              <option value="selected">Projeto selecionado</option>
+              <option value="all">Todos os projetos</option>
+            </select>
           </div>
         </div>
 
@@ -243,7 +353,7 @@
         <textarea id="note" placeholder="Uma linha sobre como correu, o que mudas amanhã, etc."></textarea>
 
         <div class="btns">
-          <button class="primary" id="saveBtn">Guardar / somar entrada</button>
+          <button class="primary" id="saveBtn">Guardar</button>
           <button id="clearBtn">Limpar</button>
           <button class="danger" id="deleteBtn">Apagar este projeto nesta data</button>
         </div>
@@ -252,7 +362,13 @@
           <button id="exportJsonBtn">Exportar JSON</button>
           <input id="importFile" type="file" accept="application/json" style="display:none" />
           <button id="importJsonBtn" type="button">Importar JSON</button>
-          <button id="exportPngBtn">Exportar gráfico (PNG)</button>
+        </div>
+
+        <div class="btns" style="margin-top:10px">
+          <button id="exportIgBtn">Card IG 4:5</button>
+          <button id="exportStoryBtn">Story 9:16</button>
+          <button id="exportWeekBtn">Recap semanal</button>
+          <button id="exportMonthBtn">Recap mensal</button>
         </div>
 
         <div class="btns" style="margin-top:10px">
@@ -261,8 +377,8 @@
         </div>
 
         <div class="hint">
-          Guardar soma palavras ao <strong>mesmo projeto na mesma data</strong>.
-          Se escolheres outro projeto na mesma data, é criada uma contagem paralela.
+          <strong>Adicionar sessão</strong> soma palavras ao mesmo projeto/data.<br>
+          <strong>Editar agregado</strong> substitui o total desse bloco.
         </div>
 
         <div class="stats">
@@ -278,68 +394,134 @@
 
         <div id="projectProgressBox"></div>
 
+        <div class="progress-wrap" style="margin-top:16px">
+          <div class="progress-head">
+            <strong>Previsão de conclusão</strong>
+            <span class="small">Baseada nos últimos 14 dias com escrita</span>
+          </div>
+          <div class="forecast-wrap">
+            <div class="stat">
+              <div class="k">Ritmo médio</div>
+              <div class="v" id="forecastPaceOut">—</div>
+            </div>
+            <div class="stat">
+              <div class="k">ETA</div>
+              <div class="v" id="forecastEtaOut">—</div>
+            </div>
+          </div>
+          <div class="small" id="forecastMetaOut" style="margin-top:10px">—</div>
+        </div>
+
+        <div class="progress-wrap" style="margin-top:16px">
+          <div class="progress-head">
+            <strong>Milestones recentes</strong>
+            <span class="small" id="mileCountOut">0 desbloqueados</span>
+          </div>
+          <div class="milestone-list" id="milestoneList"></div>
+        </div>
+
         <div class="brand">
           <span>Entre Sonhos</span>
           <span class="filemeta">Ficheiro: <span id="fileNameOut">—</span></span>
+          <span class="filemeta">Backup local automático ativo</span>
         </div>
       </section>
 
-      <section class="card">
-        <div class="topline">
-          <div>
-            <h2 style="margin:0">Evolução</h2>
-            <div class="small">A tabela mostra agregação por data + projeto. Clica numa linha para carregar esse bloco.</div>
+      <section class="stack">
+        <section class="card">
+          <div class="topline">
+            <div>
+              <h2 style="margin:0">Evolução</h2>
+              <div class="small">Clica numa linha da tabela para carregar esse bloco.</div>
+            </div>
+            <div class="inline-badge" id="chartContextOut">Projeto selecionado</div>
           </div>
-        </div>
 
-        <div style="margin-top:12px">
-          <canvas id="chart" width="1200" height="600"></canvas>
-        </div>
+          <div style="margin-top:12px">
+            <canvas id="chart" width="1200" height="600"></canvas>
+          </div>
+        </section>
 
-        <div style="overflow:auto; margin-top:10px">
-          <table>
-            <thead>
-              <tr>
-                <th style="min-width:110px">Data</th>
-                <th style="min-width:120px">Projeto</th>
-                <th style="min-width:90px">Palavras</th>
-                <th style="min-width:90px">Objetivo</th>
-                <th style="min-width:110px">Estado</th>
-                <th>Nota</th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
-        </div>
+        <section class="card">
+          <div class="heatmap-head">
+            <div>
+              <h2 style="margin:0">Heatmap mensal</h2>
+              <div class="small">Consistência visual por dia</div>
+            </div>
+            <div class="btns" style="margin-top:0">
+              <button id="heatPrevBtn" class="ghost">◀</button>
+              <span class="inline-badge" id="heatMonthLabel">—</span>
+              <button id="heatNextBtn" class="ghost">▶</button>
+            </div>
+          </div>
+
+          <div class="heatmap-grid" id="heatmapGrid"></div>
+
+          <div class="legend">
+            <span>Menos</span>
+            <i class="lvl0"></i>
+            <i class="lvl1"></i>
+            <i class="lvl2"></i>
+            <i class="lvl3"></i>
+            <i class="lvl4"></i>
+            <span>Mais</span>
+          </div>
+
+          <div class="heatmeta" id="heatmapMeta">Seleciona um dia para ver o detalhe.</div>
+        </section>
+
+        <section class="card">
+          <div class="topline">
+            <div>
+              <h2 style="margin:0">Registos</h2>
+              <div class="small">Agregação por data + projeto.</div>
+            </div>
+          </div>
+
+          <div style="overflow:auto; margin-top:10px">
+            <table>
+              <thead>
+                <tr>
+                  <th style="min-width:110px">Data</th>
+                  <th style="min-width:120px">Projeto</th>
+                  <th style="min-width:90px">Sessões</th>
+                  <th style="min-width:90px">Palavras</th>
+                  <th style="min-width:90px">Objetivo</th>
+                  <th style="min-width:110px">Estado</th>
+                  <th>Nota</th>
+                </tr>
+              </thead>
+              <tbody id="tbody"></tbody>
+            </table>
+          </div>
+        </section>
       </section>
     </div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // ------ Estado ------
-      // Estrutura interna v3:
-      // {
-      //   'YYYY-MM-DD': {
-      //      projects: {
-      //         'Nome Projeto': { words, goal, note }
-      //      }
-      //   }
-      // }
       var entries = {};
       var projects = { "Geral": { target: null } };
+      var milestoneLog = [];
+      var milestoneSeen = {};
       var loadedFileName = "—";
+      var STORAGE_KEY = "entre-sonhos-writing-tracker-v4";
+      var heatmapCursor = new Date();
+      heatmapCursor = new Date(heatmapCursor.getFullYear(), heatmapCursor.getMonth(), 1);
+      var activeHeatDate = null;
 
-      // ------ Helpers ------
       function $(id){ return document.getElementById(id); }
 
       var dateEl = $("date");
       var projectEl = $("project");
+      var entryModeEl = $("entryMode");
       var wordsEl = $("words");
       var goalEl  = $("goal");
       var projectTargetEl = $("projectTarget");
       var newProjectNameEl = $("newProjectName");
       var noteEl  = $("note");
+      var chartModeEl = $("chartMode");
 
       var saveBtn   = $("saveBtn");
       var clearBtn  = $("clearBtn");
@@ -349,7 +531,10 @@
       var exportJsonBtn = $("exportJsonBtn");
       var importJsonBtn = $("importJsonBtn");
       var importFile    = $("importFile");
-      var exportPngBtn  = $("exportPngBtn");
+      var exportIgBtn   = $("exportIgBtn");
+      var exportStoryBtn = $("exportStoryBtn");
+      var exportWeekBtn = $("exportWeekBtn");
+      var exportMonthBtn = $("exportMonthBtn");
       var copySocialBtn = $("copySocialBtn");
       var downloadSocialBtn = $("downloadSocialBtn");
 
@@ -363,6 +548,20 @@
       var projectProgressOut = $("projectProgressOut");
       var projectProgressBox = $("projectProgressBox");
       var fileNameOut= $("fileNameOut");
+      var chartContextOut = $("chartContextOut");
+
+      var forecastPaceOut = $("forecastPaceOut");
+      var forecastEtaOut = $("forecastEtaOut");
+      var forecastMetaOut = $("forecastMetaOut");
+
+      var milestoneList = $("milestoneList");
+      var mileCountOut = $("mileCountOut");
+
+      var heatPrevBtn = $("heatPrevBtn");
+      var heatNextBtn = $("heatNextBtn");
+      var heatMonthLabel = $("heatMonthLabel");
+      var heatmapGrid = $("heatmapGrid");
+      var heatmapMeta = $("heatmapMeta");
 
       var tbody  = $("tbody");
       var canvas = $("chart");
@@ -377,17 +576,8 @@
       }
 
       function sortDates(a,b){ return a < b ? -1 : a > b ? 1 : 0; }
-
-      function fmtNum(n){
-        if (!isFinite(n)) return "0";
-        return n.toLocaleString("pt-PT");
-      }
-
-      function safeInt(value){
-        var n = Number(value);
-        if (!isFinite(n) || n < 0) return 0;
-        return Math.floor(n);
-      }
+      function fmtNum(n){ if (!isFinite(n)) return "0"; return n.toLocaleString("pt-PT"); }
+      function safeInt(value){ var n = Number(value); if (!isFinite(n) || n < 0) return 0; return Math.floor(n); }
 
       function downloadBlob(blob, filename){
         var url = URL.createObjectURL(blob);
@@ -400,60 +590,64 @@
         URL.revokeObjectURL(url);
       }
 
-      function currentFormKey(){
-        return (dateEl.value || "").trim();
-      }
-
-      function daysBetween(a, b){
-        var da = new Date(a + "T00:00:00");
-        var db = new Date(b + "T00:00:00");
-        return Math.round((db - da) / 86400000);
-      }
-
       function escapeHtml(str){
         return String(str)
           .replace(/&/g,"&amp;")
           .replace(/</g,"&lt;")
           .replace(/>/g,"&gt;")
-          .replace(/"/g,"&quot;")
+          .replace(/\"/g,"&quot;")
           .replace(/'/g,"&#039;");
       }
 
-      function ensureDefaultProject(){
-        if (!projects || typeof projects !== "object") projects = {};
-        if (!projects["Geral"]) projects["Geral"] = { target: null };
-      }
+      function currentFormKey(){ return (dateEl.value || "").trim(); }
+      function currentProjectName(){ var p = (projectEl.value || "").trim(); return p && projects[p] ? p : "Geral"; }
+      function daysBetween(a, b){ var da = new Date(a + "T00:00:00"); var db = new Date(b + "T00:00:00"); return Math.round((db - da) / 86400000); }
+      function addDays(dateObj, days){ var d = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate()); d.setDate(d.getDate() + days); return d; }
+      function isoFromDate(dateObj){ var y = dateObj.getFullYear(); var m = String(dateObj.getMonth()+1).padStart(2,"0"); var da = String(dateObj.getDate()).padStart(2,"0"); return y + "-" + m + "-" + da; }
+      function formatDateLong(dateKey){ var d = new Date(dateKey + "T00:00:00"); return d.toLocaleDateString("pt-PT", { day:"2-digit", month:"long", year:"numeric" }); }
+      function monthLabel(dateObj){ return dateObj.toLocaleDateString("pt-PT", { month:"long", year:"numeric" }); }
 
-      function currentProjectName(){
-        var p = (projectEl.value || "").trim();
-        return p && projects[p] ? p : "Geral";
-      }
+      function ensureDefaultProject(){ if (!projects || typeof projects !== "object") projects = {}; if (!projects["Geral"]) projects["Geral"] = { target: null }; }
+      function ensureDayEntry(dateKey){ if (!entries[dateKey] || typeof entries[dateKey] !== "object") entries[dateKey] = { projects: {} }; if (!entries[dateKey].projects || typeof entries[dateKey].projects !== "object") entries[dateKey].projects = {}; }
+      function getProjectEntry(dateKey, projectName){ if (!entries[dateKey] || !entries[dateKey].projects) return null; return entries[dateKey].projects[projectName] || null; }
+      function getDayTotal(dateKey){ var total = 0; var day = entries[dateKey]; if (!day || !day.projects) return 0; var names = Object.keys(day.projects); for (var i=0; i<names.length; i++) total += safeInt(day.projects[names[i]].words); return total; }
+      function getDayProjectBreakdown(dateKey){ var out = []; var day = entries[dateKey]; if (!day || !day.projects) return out; var names = Object.keys(day.projects).sort(function(a,b){ return a.localeCompare(b, "pt"); }); for (var i=0; i<names.length; i++){ var block = day.projects[names[i]]; out.push({ project: names[i], words: safeInt(block.words), sessions: safeInt(block.sessions || 1) }); } return out; }
 
-      function ensureDayEntry(dateKey){
-        if (!entries[dateKey] || typeof entries[dateKey] !== "object"){
-          entries[dateKey] = { projects: {} };
+      function getProjectTotals(){
+        var totals = {};
+        var names = Object.keys(projects);
+        for (var i=0; i<names.length; i++) totals[names[i]] = 0;
+        var days = Object.keys(entries);
+        for (var d=0; d<days.length; d++){
+          var day = entries[days[d]];
+          if (!day || !day.projects) continue;
+          var projectNames = Object.keys(day.projects);
+          for (var p=0; p<projectNames.length; p++){
+            var name = projectNames[p];
+            if (totals[name] === undefined) totals[name] = 0;
+            totals[name] += safeInt(day.projects[name].words);
+          }
         }
-        if (!entries[dateKey].projects || typeof entries[dateKey].projects !== "object"){
-          entries[dateKey].projects = {};
-        }
+        return totals;
       }
 
-      function getProjectEntry(dateKey, projectName){
-        if (!entries[dateKey] || !entries[dateKey].projects) return null;
-        return entries[dateKey].projects[projectName] || null;
+      function getSelectedProjectProgressData(){
+        var p = currentProjectName();
+        var totals = getProjectTotals();
+        var totalWords = totals[p] || 0;
+        var target = projects[p] ? projects[p].target : null;
+        var pct = (target && target > 0) ? Math.min(100, Math.round((totalWords / target) * 100)) : null;
+        return { name:p, totalWords:totalWords, target:target, pct:pct };
       }
 
       function renderProjectOptions(preferredProject){
         ensureDefaultProject();
-
         var names = Object.keys(projects).sort(function(a,b){
           if (a === "Geral") return -1;
           if (b === "Geral") return 1;
           return a.localeCompare(b, "pt");
         });
-
         var selectedBefore = preferredProject || projectEl.value || "Geral";
-
         projectEl.innerHTML = "";
         for (var i=0; i<names.length; i++){
           var opt = document.createElement("option");
@@ -461,13 +655,8 @@
           opt.textContent = names[i];
           projectEl.appendChild(opt);
         }
-
-        if (projects[selectedBefore]){
-          projectEl.value = selectedBefore;
-        } else {
-          projectEl.value = names[0];
-        }
-
+        if (projects[selectedBefore]) projectEl.value = selectedBefore;
+        else projectEl.value = names[0];
         syncProjectTargetInput();
       }
 
@@ -477,216 +666,384 @@
         projectTargetEl.value = (target === null || target === undefined) ? "" : String(target);
       }
 
-      function clearForm(){
+      function clearForm(keepProject){
         dateEl.value = todayISO();
         wordsEl.value = "";
-        goalEl.value  = "";
-        noteEl.value  = "";
-        syncProjectTargetInput();
+        goalEl.value = "";
+        noteEl.value = "";
+        entryModeEl.value = "add";
+        if (!keepProject) renderProjectOptions(currentProjectName());
+        else syncProjectTargetInput();
       }
 
       function loadToForm(dateKey, projectName){
-        var p = projectName && projects[projectName] ? projectName : "Geral";
-        var entry = getProjectEntry(dateKey, p);
+        var project = projectName && projects[projectName] ? projectName : "Geral";
+        var entry = getProjectEntry(dateKey, project);
         if (!entry) return;
-
         dateEl.value = dateKey;
-        projectEl.value = p;
+        projectEl.value = project;
         wordsEl.value = String(entry.words || 0);
-        goalEl.value  = (entry.goal === null || entry.goal === undefined) ? "" : String(entry.goal);
-        noteEl.value  = entry.note || "";
+        goalEl.value = (entry.goal === null || entry.goal === undefined) ? "" : String(entry.goal);
+        noteEl.value = entry.note || "";
+        entryModeEl.value = "edit";
         syncProjectTargetInput();
+      }
+
+      function saveStateLocal(){
+        try{
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            version: 4,
+            projects: projects,
+            entries: entries,
+            milestoneLog: milestoneLog,
+            milestoneSeen: milestoneSeen,
+            heatmapCursor: isoFromDate(heatmapCursor)
+          }));
+        } catch(err){}
+      }
+
+      function normalizeImportedData(data){
+        var cleanedProjects = { "Geral": { target: null } };
+        var cleanedEntries = {};
+
+        if (data.projects && typeof data.projects === "object"){
+          for (var projectName in data.projects){
+            if (!projectName) continue;
+            var projectTarget = data.projects[projectName] && data.projects[projectName].target;
+            cleanedProjects[projectName] = { target: (projectTarget === null || projectTarget === undefined || projectTarget === "") ? null : safeInt(projectTarget) };
+          }
+        }
+
+        if (!data.entries || typeof data.entries !== "object") return { projects: cleanedProjects, entries: cleanedEntries };
+
+        for (var dateKey in data.entries){
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) continue;
+          var rawDay = data.entries[dateKey] || {};
+          var normalizedDayProjects = {};
+
+          if (rawDay.projects && typeof rawDay.projects === "object"){
+            for (var pn in rawDay.projects){
+              var block = rawDay.projects[pn] || {};
+              var safeProjectName = pn || "Geral";
+              if (!cleanedProjects[safeProjectName]) cleanedProjects[safeProjectName] = { target: null };
+              normalizedDayProjects[safeProjectName] = {
+                words: safeInt(block.words),
+                goal: (block.goal === null || block.goal === undefined || block.goal === "") ? null : safeInt(block.goal),
+                note: block.note ? String(block.note) : "",
+                sessions: Math.max(1, safeInt(block.sessions || 1))
+              };
+            }
+          } else {
+            var legacyProject = rawDay.project ? String(rawDay.project) : "Geral";
+            if (!cleanedProjects[legacyProject]) cleanedProjects[legacyProject] = { target: null };
+            normalizedDayProjects[legacyProject] = {
+              words: safeInt(rawDay.words),
+              goal: (rawDay.goal === null || rawDay.goal === undefined || rawDay.goal === "") ? null : safeInt(rawDay.goal),
+              note: rawDay.note ? String(rawDay.note) : "",
+              sessions: 1
+            };
+          }
+
+          if (Object.keys(normalizedDayProjects).length) cleanedEntries[dateKey] = { projects: normalizedDayProjects };
+        }
+
+        return { projects: cleanedProjects, entries: cleanedEntries };
+      }
+
+      function loadStateLocal(){
+        try{
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return false;
+          var data = JSON.parse(raw);
+          if (!data || typeof data !== "object") return false;
+          var normalized = normalizeImportedData(data);
+          projects = normalized.projects;
+          entries = normalized.entries;
+          milestoneLog = Array.isArray(data.milestoneLog) ? data.milestoneLog : [];
+          milestoneSeen = (data.milestoneSeen && typeof data.milestoneSeen === "object") ? data.milestoneSeen : {};
+          if (data.heatmapCursor && /^\d{4}-\d{2}-\d{2}$/.test(data.heatmapCursor)){
+            var d = new Date(data.heatmapCursor + "T00:00:00");
+            heatmapCursor = new Date(d.getFullYear(), d.getMonth(), 1);
+          }
+          loadedFileName = "backup local";
+          return true;
+        } catch(err){ return false; }
       }
 
       function addProject(){
         var name = (newProjectNameEl.value || "").trim();
-        if (!name){
-          alert("Escreve o nome do projeto.");
-          return;
-        }
-
-        if (projects[name]){
-          projectEl.value = name;
-          syncProjectTargetInput();
-          alert("Esse projeto já existe.");
-          return;
-        }
-
+        if (!name){ alert("Escreve o nome do projeto."); return; }
+        if (projects[name]){ projectEl.value = name; syncProjectTargetInput(); alert("Esse projeto já existe."); return; }
         projects[name] = { target: null };
         renderProjectOptions(name);
         newProjectNameEl.value = "";
+        saveStateLocal();
+        render();
       }
 
       function saveEntry(){
         var dateKey = currentFormKey();
-        if (!dateKey){
-          alert("Escolhe uma data.");
-          return;
-        }
-
+        if (!dateKey){ alert("Escolhe uma data."); return; }
         var project = currentProjectName();
-        var wordsToAdd = safeInt(wordsEl.value);
+        var mode = entryModeEl.value;
+        var wordsValue = safeInt(wordsEl.value);
         var goalRaw = (goalEl.value || "").trim();
         var noteRaw = (noteEl.value || "").trim();
         var projectTargetRaw = (projectTargetEl.value || "").trim();
 
-        if (projectTargetRaw === ""){
-          projects[project].target = null;
-        } else {
-          projects[project].target = safeInt(projectTargetRaw);
-        }
+        projects[project].target = projectTargetRaw === "" ? null : safeInt(projectTargetRaw);
 
         ensureDayEntry(dateKey);
-
         if (!entries[dateKey].projects[project]){
-          entries[dateKey].projects[project] = {
-            words: 0,
-            goal: null,
-            note: ""
-          };
+          entries[dateKey].projects[project] = { words: 0, goal: null, note: "", sessions: 0 };
         }
 
         var existing = entries[dateKey].projects[project];
 
-        existing.words += wordsToAdd;
-
-        if (goalRaw !== ""){
-          existing.goal = safeInt(goalRaw);
+        if (mode === "edit"){
+          existing.words = wordsValue;
+          existing.goal = goalRaw === "" ? null : safeInt(goalRaw);
+          existing.note = noteRaw;
+          existing.sessions = Math.max(1, safeInt(existing.sessions || 1));
+        } else {
+          existing.words += wordsValue;
+          existing.sessions = Math.max(0, safeInt(existing.sessions || 0)) + 1;
+          if (goalRaw !== "") existing.goal = safeInt(goalRaw);
+          if (noteRaw) existing.note = existing.note ? (existing.note + " | " + noteRaw) : noteRaw;
         }
 
-        if (noteRaw){
-          existing.note = existing.note
-            ? (existing.note + " | " + noteRaw)
-            : noteRaw;
-        }
-
+        detectNewMilestones(dateKey);
+        saveStateLocal();
         renderProjectOptions(project);
         render();
         loadToForm(dateKey, project);
-
-        wordsEl.value = "";
-        noteEl.value = "";
+        if (mode === "add"){
+          wordsEl.value = "";
+          noteEl.value = "";
+        }
       }
 
       function deleteEntry(){
         var dateKey = currentFormKey();
         var project = currentProjectName();
-
         if (!dateKey) return;
-        if (!entries[dateKey] || !entries[dateKey].projects || !entries[dateKey].projects[project]){
-          alert("Não existe registo para esse projeto nessa data.");
-          return;
-        }
-
+        if (!entries[dateKey] || !entries[dateKey].projects || !entries[dateKey].projects[project]){ alert("Não existe registo para esse projeto nessa data."); return; }
         if (!confirm("Apagar o projeto '" + project + "' na data " + dateKey + "?")) return;
-
         delete entries[dateKey].projects[project];
-
-        if (Object.keys(entries[dateKey].projects).length === 0){
-          delete entries[dateKey];
-        }
-
-        clearForm();
+        if (Object.keys(entries[dateKey].projects).length === 0) delete entries[dateKey];
+        detectNewMilestones(dateKey);
+        saveStateLocal();
+        clearForm(true);
         render();
       }
 
       function computeStreak(keys){
         if (!keys.length) return { current: 0, best: 0 };
-
         var streaks = [];
         var currentRun = 1;
-
         for (var i=1; i<keys.length; i++){
           var diff = daysBetween(keys[i-1], keys[i]);
-          if (diff === 1){
-            currentRun++;
-          } else {
-            streaks.push(currentRun);
-            currentRun = 1;
-          }
+          if (diff === 1) currentRun++;
+          else { streaks.push(currentRun); currentRun = 1; }
         }
         streaks.push(currentRun);
-
         var best = 0;
-        for (var j=0; j<streaks.length; j++){
-          if (streaks[j] > best) best = streaks[j];
-        }
-
+        for (var j=0; j<streaks.length; j++) if (streaks[j] > best) best = streaks[j];
         var current = 0;
         var today = todayISO();
         var last = keys[keys.length - 1];
         var diffToday = daysBetween(last, today);
-
-        if (diffToday === 0 || diffToday === 1){
-          current = streaks[streaks.length - 1];
-        } else {
-          current = 0;
-        }
-
+        if (diffToday === 0 || diffToday === 1) current = streaks[streaks.length - 1];
         return { current: current, best: best };
       }
 
-      function getProjectTotals(){
-        var totals = {};
-        var projectNames = Object.keys(projects);
-
-        for (var i=0; i<projectNames.length; i++){
-          totals[projectNames[i]] = 0;
-        }
-
-        var days = Object.keys(entries);
-        for (var d=0; d<days.length; d++){
-          var day = entries[days[d]];
+      function getFlatRows(){
+        var rows = [];
+        var dates = Object.keys(entries).sort(sortDates);
+        for (var i=0; i<dates.length; i++){
+          var dateKey = dates[i];
+          var day = entries[dateKey];
           if (!day || !day.projects) continue;
-
-          var names = Object.keys(day.projects);
+          var names = Object.keys(day.projects).sort(function(a,b){ if (a === currentProjectName()) return -1; if (b === currentProjectName()) return 1; return a.localeCompare(b, "pt"); });
           for (var p=0; p<names.length; p++){
-            var name = names[p];
-            if (totals[name] === undefined) totals[name] = 0;
-            totals[name] += safeInt(day.projects[name].words);
+            var projectName = names[p];
+            var block = day.projects[projectName];
+            rows.push({ date: dateKey, project: projectName, sessions: safeInt(block.sessions || 1), words: safeInt(block.words), goal: (block.goal === null || block.goal === undefined) ? null : safeInt(block.goal), note: block.note || "" });
           }
         }
-
-        return totals;
+        return rows;
       }
 
-      function getSelectedProjectProgressData(){
-        var p = currentProjectName();
-        var totals = getProjectTotals();
-        var totalWords = totals[p] || 0;
-        var target = projects[p] ? projects[p].target : null;
-        var pct = (target && target > 0)
-          ? Math.min(100, Math.round((totalWords / target) * 100))
-          : null;
+      function getDailySeries(keys, mode){
+        var wordsSeries = [];
+        var goalSeries = [];
+        var selectedProject = currentProjectName();
+        for (var i=0; i<keys.length; i++){
+          var day = entries[keys[i]];
+          var totalWords = 0;
+          var totalGoal = 0;
+          var hasGoal = false;
+          if (day && day.projects){
+            var names = Object.keys(day.projects);
+            for (var p=0; p<names.length; p++){
+              var name = names[p];
+              if (mode === "selected" && name !== selectedProject) continue;
+              var block = day.projects[name];
+              totalWords += safeInt(block.words);
+              if (block.goal !== null && block.goal !== undefined){ totalGoal += safeInt(block.goal); hasGoal = true; }
+            }
+          }
+          wordsSeries.push(totalWords);
+          goalSeries.push(hasGoal ? totalGoal : null);
+        }
+        return { wordsSeries: wordsSeries, goalSeries: goalSeries };
+      }
 
-        return {
-          name: p,
-          totalWords: totalWords,
-          target: target,
-          pct: pct
-        };
+      function getSelectedProjectRecentPace(){
+        var selectedProject = currentProjectName();
+        var rows = [];
+        var dates = Object.keys(entries).sort(sortDates);
+        for (var i=0; i<dates.length; i++){
+          var block = getProjectEntry(dates[i], selectedProject);
+          if (block && safeInt(block.words) > 0) rows.push({ date: dates[i], words: safeInt(block.words) });
+        }
+        var recent = rows.slice(-14);
+        if (!recent.length) return { pace:null, eta:null, remaining:null, target:null, dateText:"Dados insuficientes" };
+        var sum = 0;
+        for (var j=0; j<recent.length; j++) sum += recent[j].words;
+        var pace = Math.round(sum / recent.length);
+        var selectedData = getSelectedProjectProgressData();
+        if (!selectedData.target || pace <= 0){
+          return { pace: pace, eta: null, remaining: null, target: selectedData.target, dateText: selectedData.target ? "Sem ritmo suficiente para previsão." : "Projeto sem meta definida." };
+        }
+        var remaining = Math.max(0, selectedData.target - selectedData.totalWords);
+        var daysToFinish = Math.ceil(remaining / pace);
+        var etaDate = addDays(new Date(), daysToFinish);
+        return { pace: pace, eta: daysToFinish, remaining: remaining, target: selectedData.target, dateText: remaining === 0 ? "Projeto concluído." : formatDateLong(isoFromDate(etaDate)) };
+      }
+
+      function currentAchievements(){
+        var achievements = [];
+        var totals = getProjectTotals();
+        var projectNames = Object.keys(totals);
+        var wordThresholds = [1000, 5000, 10000, 25000, 50000];
+        var pctThresholds = [25, 50, 75, 100];
+        for (var i=0; i<projectNames.length; i++){
+          var project = projectNames[i];
+          var total = totals[project] || 0;
+          for (var w=0; w<wordThresholds.length; w++){
+            if (total >= wordThresholds[w]) achievements.push({ id: "project_words_" + project + "_" + wordThresholds[w], title: project + " chegou a " + fmtNum(wordThresholds[w]) + " palavras", subtitle: "Milestone de volume", dateUnlocked: todayISO() });
+          }
+          var target = projects[project] ? projects[project].target : null;
+          if (target && target > 0){
+            var pct = Math.floor((total / target) * 100);
+            for (var p=0; p<pctThresholds.length; p++){
+              if (pct >= pctThresholds[p]) achievements.push({ id: "project_pct_" + project + "_" + pctThresholds[p], title: project + " atingiu " + pctThresholds[p] + "%", subtitle: fmtNum(total) + " / " + fmtNum(target) + " palavras", dateUnlocked: todayISO() });
+            }
+          }
+        }
+        var streakData = computeStreak(Object.keys(entries).sort(sortDates));
+        var streakThresholds = [7, 30, 100];
+        for (var s=0; s<streakThresholds.length; s++){
+          if (streakData.best >= streakThresholds[s]) achievements.push({ id: "streak_" + streakThresholds[s], title: "Streak de " + streakThresholds[s] + " dias", subtitle: "Marco de consistência", dateUnlocked: todayISO() });
+        }
+        return achievements;
+      }
+
+      function detectNewMilestones(unlockDate){
+        var current = currentAchievements();
+        for (var i=0; i<current.length; i++){
+          var item = current[i];
+          if (!milestoneSeen[item.id]){
+            milestoneSeen[item.id] = true;
+            milestoneLog.unshift({ id: item.id, title: item.title, subtitle: item.subtitle, dateUnlocked: unlockDate || todayISO() });
+          }
+        }
+        var keep = [];
+        var seenIds = {};
+        for (var j=0; j<milestoneLog.length; j++){
+          var log = milestoneLog[j];
+          if (seenIds[log.id]) continue;
+          seenIds[log.id] = true;
+          keep.push(log);
+        }
+        milestoneLog = keep.slice(0, 40);
+      }
+
+      function renderMilestones(){
+        mileCountOut.textContent = milestoneLog.length + " desbloqueados";
+        if (!milestoneLog.length){ milestoneList.innerHTML = '<div class="small">Ainda sem milestones desbloqueados.</div>'; return; }
+        var html = "";
+        for (var i=0; i<Math.min(6, milestoneLog.length); i++){
+          var m = milestoneLog[i];
+          html += '<div class="mile"><strong>' + escapeHtml(m.title) + '</strong><span class="small">' + escapeHtml(m.subtitle) + '</span><span class="small" style="margin-top:6px">Desbloqueado em ' + escapeHtml(formatDateLong(m.dateUnlocked)) + '</span></div>';
+        }
+        milestoneList.innerHTML = html;
+      }
+
+      function computeStats(){
+        var keys = Object.keys(entries).sort(sortDates);
+        var days = keys.length;
+        var total = 0;
+        var goalDefinedBlocks = 0;
+        var goalHitBlocks = 0;
+        for (var i=0; i<keys.length; i++){
+          var day = entries[keys[i]];
+          if (!day || !day.projects) continue;
+          var names = Object.keys(day.projects);
+          for (var p=0; p<names.length; p++){
+            var block = day.projects[names[p]];
+            var w = safeInt(block.words);
+            total += w;
+            if (block.goal !== null && block.goal !== undefined){
+              var g = safeInt(block.goal);
+              goalDefinedBlocks++;
+              if (w >= g) goalHitBlocks++;
+            }
+          }
+        }
+        var avg = days ? Math.round(total / days) : 0;
+        var goalPct = goalDefinedBlocks ? Math.round((goalHitBlocks / goalDefinedBlocks) * 100) : 0;
+        var streakData = computeStreak(keys);
+        var forecast = getSelectedProjectRecentPace();
+
+        totalOut.textContent = fmtNum(total);
+        avgOut.textContent = fmtNum(avg);
+        daysOut.textContent = fmtNum(days);
+        goalPctOut.textContent = goalPct + "%";
+        streakOut.textContent = String(streakData.current);
+        bestStreakOut.textContent = String(streakData.best);
+        fileNameOut.textContent = loadedFileName || "—";
+        forecastPaceOut.textContent = forecast.pace ? (fmtNum(forecast.pace) + "/dia") : "—";
+        if (forecast.eta === null && forecast.remaining === 0) forecastEtaOut.textContent = "Concluído";
+        else if (forecast.eta !== null) forecastEtaOut.textContent = forecast.eta + " dias";
+        else forecastEtaOut.textContent = "—";
+        forecastMetaOut.textContent = forecast.dateText;
+
+        renderProjectProgressBox();
+        renderMilestones();
+        return keys;
+      }
+
+      function statusPill(words, goal){
+        if (goal === null || goal === undefined) return '<span class="pill miss">sem objetivo</span>';
+        if (goal === 0 || words >= goal) return '<span class="pill ok">cumprido</span>';
+        var pct = Math.round((words / goal) * 100);
+        return '<span class="pill bad">' + pct + '%</span>';
       }
 
       function renderProjectProgressBox(){
         var selected = getSelectedProjectProgressData();
         currentProjectOut.textContent = selected.name;
-
-        if (selected.target){
-          projectProgressOut.textContent = selected.pct + "%";
-        } else {
-          projectProgressOut.textContent = fmtNum(selected.totalWords) + " palavras";
-        }
+        projectProgressOut.textContent = selected.target ? (selected.pct + "%") : (fmtNum(selected.totalWords) + " palavras");
 
         var totals = getProjectTotals();
         var names = Object.keys(projects).filter(function(name){
           var total = totals[name] || 0;
           var target = projects[name] ? projects[name].target : null;
-          return total > 0 || (target !== null && target !== undefined);
+          return total > 0 || target !== null;
         });
-
-        if (!names.length){
-          names = ["Geral"];
-        }
+        if (!names.length) names = ["Geral"];
 
         names.sort(function(a,b){
           if (a === selected.name) return -1;
@@ -701,180 +1058,39 @@
           var name = names[i];
           var totalWords = totals[name] || 0;
           var target = projects[name] ? projects[name].target : null;
-
           if (!target){
-            html +=
-              '<div class="progress-wrap">' +
-                '<div class="progress-head">' +
-                  '<strong>' + escapeHtml(name) + '</strong>' +
-                  '<span class="small">Sem meta definida</span>' +
-                '</div>' +
-                '<div class="small">' + fmtNum(totalWords) + ' palavras acumuladas</div>' +
-              '</div>';
+            html += '<div class="progress-wrap"><div class="progress-head"><strong>' + escapeHtml(name) + '</strong><span class="small">Sem meta definida</span></div><div class="small">' + fmtNum(totalWords) + ' palavras acumuladas</div></div>';
           } else {
             var pct = Math.min(100, Math.round((totalWords / target) * 100));
-            html +=
-              '<div class="progress-wrap">' +
-                '<div class="progress-head">' +
-                  '<strong>' + escapeHtml(name) + '</strong>' +
-                  '<span class="small">' + fmtNum(totalWords) + ' / ' + fmtNum(target) + ' palavras</span>' +
-                '</div>' +
-                '<div class="progress-bar">' +
-                  '<div class="progress-fill" style="width:' + pct + '%"></div>' +
-                '</div>' +
-                '<div class="small" style="margin-top:8px">' + pct + '% concluído</div>' +
-              '</div>';
+            html += '<div class="progress-wrap"><div class="progress-head"><strong>' + escapeHtml(name) + '</strong><span class="small">' + fmtNum(totalWords) + ' / ' + fmtNum(target) + ' palavras</span></div><div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div><div class="small" style="margin-top:8px">' + pct + '% concluído</div></div>';
           }
         }
-
         projectProgressBox.innerHTML = html;
-      }
-
-      function computeStats(){
-        var keys = Object.keys(entries).sort(sortDates);
-        var days = keys.length;
-        var total = 0;
-
-        var goalDefinedBlocks = 0;
-        var goalHitBlocks     = 0;
-
-        for (var i=0; i<keys.length; i++){
-          var day = entries[keys[i]];
-          if (!day || !day.projects) continue;
-
-          var names = Object.keys(day.projects);
-          for (var p=0; p<names.length; p++){
-            var block = day.projects[names[p]];
-            var w = safeInt(block.words);
-            total += w;
-
-            if (block.goal !== null && block.goal !== undefined){
-              var g = safeInt(block.goal);
-              goalDefinedBlocks++;
-              if (w >= g) goalHitBlocks++;
-            }
-          }
-        }
-
-        var avg = days ? Math.round(total / days) : 0;
-        var goalPct = goalDefinedBlocks
-          ? Math.round((goalHitBlocks / goalDefinedBlocks) * 100)
-          : 0;
-
-        var streakData = computeStreak(keys);
-
-        totalOut.textContent = fmtNum(total);
-        avgOut.textContent   = fmtNum(avg);
-        daysOut.textContent  = fmtNum(days);
-        goalPctOut.textContent = goalPct + "%";
-        streakOut.textContent = String(streakData.current);
-        bestStreakOut.textContent = String(streakData.best);
-        fileNameOut.textContent = loadedFileName || "—";
-
-        renderProjectProgressBox();
-
-        return keys;
-      }
-
-      function statusPill(words, goal){
-        if (goal === null || goal === undefined){
-          return '<span class="pill miss">sem objetivo</span>';
-        }
-        if (goal === 0 || words >= goal){
-          return '<span class="pill ok">cumprido</span>';
-        }
-        var pct = Math.round((words / goal) * 100);
-        return '<span class="pill bad">' + pct + '%</span>';
-      }
-
-      function getFlatRows(){
-        var rows = [];
-        var dates = Object.keys(entries).sort(sortDates);
-
-        for (var i=0; i<dates.length; i++){
-          var dateKey = dates[i];
-          var day = entries[dateKey];
-          if (!day || !day.projects) continue;
-
-          var names = Object.keys(day.projects).sort(function(a,b){
-            if (a === "Geral") return 1;
-            if (b === "Geral") return -1;
-            return a.localeCompare(b, "pt");
-          });
-
-          for (var p=0; p<names.length; p++){
-            var projectName = names[p];
-            var block = day.projects[projectName];
-            rows.push({
-              date: dateKey,
-              project: projectName,
-              words: safeInt(block.words),
-              goal: (block.goal === null || block.goal === undefined) ? null : safeInt(block.goal),
-              note: block.note || ""
-            });
-          }
-        }
-
-        return rows;
       }
 
       function renderTable(){
         tbody.innerHTML = "";
         var rows = getFlatRows();
-
         for (var i=0; i<rows.length; i++){
           var r = rows[i];
-
           var tr = document.createElement("tr");
           tr.innerHTML =
             "<td>" + r.date + "</td>" +
             "<td><span class='project-tag'>" + escapeHtml(r.project) + "</span></td>" +
+            "<td>" + fmtNum(r.sessions) + "</td>" +
             "<td>" + fmtNum(r.words) + "</td>" +
             "<td>" + (r.goal === null ? "—" : fmtNum(r.goal)) + "</td>" +
             "<td>" + statusPill(r.words, r.goal) + "</td>" +
             "<td>" + escapeHtml(r.note) + "</td>";
-
-          (function(dateKey, projectName){
-            tr.addEventListener("click", function(){
-              loadToForm(dateKey, projectName);
-            });
-          })(r.date, r.project);
-
+          (function(dateKey, projectName){ tr.addEventListener("click", function(){ loadToForm(dateKey, projectName); render(); }); })(r.date, r.project);
           tbody.appendChild(tr);
         }
       }
 
-      function getDailySeries(keys){
-        var wordsSeries = [];
-        var goalSeries = [];
-
-        for (var i=0; i<keys.length; i++){
-          var day = entries[keys[i]];
-          var totalWords = 0;
-          var totalGoal = 0;
-          var hasGoal = false;
-
-          if (day && day.projects){
-            var names = Object.keys(day.projects);
-            for (var p=0; p<names.length; p++){
-              var block = day.projects[names[p]];
-              totalWords += safeInt(block.words);
-
-              if (block.goal !== null && block.goal !== undefined){
-                totalGoal += safeInt(block.goal);
-                hasGoal = true;
-              }
-            }
-          }
-
-          wordsSeries.push(totalWords);
-          goalSeries.push(hasGoal ? totalGoal : null);
-        }
-
-        return { wordsSeries: wordsSeries, goalSeries: goalSeries };
-      }
-
       function renderChart(keys){
+        var mode = chartModeEl.value || "selected";
+        chartContextOut.textContent = mode === "selected" ? ("Projeto: " + currentProjectName()) : "Todos os projetos";
+
         var W = canvas.width;
         var H = canvas.height;
         ctx.clearRect(0,0,W,H);
@@ -896,17 +1112,13 @@
         }
         ctx.restore();
 
-        var series = getDailySeries(keys);
+        var series = getDailySeries(keys, mode);
         var wordsSeries = series.wordsSeries;
         var goalSeries = series.goalSeries;
 
         var maxVal = 10;
-        for (var j=0;j<wordsSeries.length;j++){
-          if (wordsSeries[j] > maxVal) maxVal = wordsSeries[j];
-        }
-        for (j=0;j<goalSeries.length;j++){
-          if (goalSeries[j] !== null && goalSeries[j] > maxVal) maxVal = goalSeries[j];
-        }
+        for (var j=0;j<wordsSeries.length;j++) if (wordsSeries[j] > maxVal) maxVal = wordsSeries[j];
+        for (j=0;j<goalSeries.length;j++) if (goalSeries[j] !== null && goalSeries[j] > maxVal) maxVal = goalSeries[j];
 
         ctx.save();
         ctx.strokeStyle = "rgba(255,255,255,0.18)";
@@ -941,14 +1153,8 @@
           return;
         }
 
-        function xAt(i){
-          if (keys.length === 1) return padL + plotW/2;
-          return padL + (plotW * i / (keys.length - 1));
-        }
-        function yAt(v){
-          var t = v / maxVal;
-          return padT + (plotH * (1 - t));
-        }
+        function xAt(i){ if (keys.length === 1) return padL + plotW/2; return padL + (plotW * i / (keys.length - 1)); }
+        function yAt(v){ var t = maxVal === 0 ? 0 : v / maxVal; return padT + (plotH * (1 - t)); }
 
         ctx.save();
         ctx.strokeStyle = "rgba(255,122,24,0.95)";
@@ -965,32 +1171,25 @@
         ctx.restore();
 
         ctx.save();
-        ctx.strokeStyle = "rgba(255,255,255,0.60)";
+        ctx.strokeStyle = "rgba(255,204,102,0.70)";
         ctx.lineWidth = 3;
         for (var k=0;k<keys.length-1;k++){
           var g1 = goalSeries[k];
           var g2 = goalSeries[k+1];
           if (g1 === null || g2 === null) continue;
-          var x1 = xAt(k),   y1 = yAt(g1);
-          var x2 = xAt(k+1), y2 = yAt(g2);
-
-          var steps = 10;
-          for (var s=0;s<steps;s++){
-            if (s % 2 === 1) continue;
-            var t1 = s/steps;
-            var t2 = (s+1)/steps;
-            ctx.beginPath();
-            ctx.moveTo(x1 + (x2-x1)*t1, y1 + (y2-y1)*t1);
-            ctx.lineTo(x1 + (x2-x1)*t2, y1 + (y2-y1)*t2);
-            ctx.stroke();
-          }
+          var x1 = xAt(k), y1 = yAt(g1), x2 = xAt(k+1), y2 = yAt(g2);
+          ctx.setLineDash([8, 8]);
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
         }
+        ctx.setLineDash([]);
         ctx.restore();
 
         ctx.save();
         for (var p=0;p<keys.length;p++){
-          var px = xAt(p);
-          var py = yAt(wordsSeries[p]);
+          var px = xAt(p), py = yAt(wordsSeries[p]);
           ctx.fillStyle = "rgba(255,122,24,1)";
           ctx.beginPath(); ctx.arc(px,py,6,0,Math.PI*2); ctx.fill();
           ctx.fillStyle = "rgba(0,0,0,0.65)";
@@ -1003,19 +1202,15 @@
         ctx.font = "18px system-ui, -apple-system, Segoe UI, Roboto, Arial";
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
-        var first = keys[0];
-        var last  = keys[keys.length-1];
+        var first = keys[0], last = keys[keys.length-1];
         ctx.fillText(first, xAt(0), H - padB + 18);
-        if (keys.length > 1){
-          ctx.fillText(last, xAt(keys.length-1), H - padB + 18);
-        }
+        if (keys.length > 1) ctx.fillText(last, xAt(keys.length-1), H - padB + 18);
         ctx.textAlign = "left";
         ctx.textBaseline = "alphabetic";
         ctx.fillStyle = "rgba(255,122,24,0.95)";
         ctx.fillText("Palavras", padL, padT - 6);
-        ctx.fillStyle = "rgba(255,255,255,0.70)";
+        ctx.fillStyle = "rgba(255,204,102,0.80)";
         ctx.fillText("Objetivo", padL + 120, padT - 6);
-
         ctx.fillStyle = "rgba(255,255,255,0.45)";
         ctx.font = "14px system-ui, -apple-system, Segoe UI, Roboto, Arial";
         ctx.textAlign = "right";
@@ -1024,149 +1219,360 @@
         ctx.restore();
       }
 
+      function renderHeatmap(){
+        heatMonthLabel.textContent = monthLabel(heatmapCursor);
+        heatmapGrid.innerHTML = "";
+        var headers = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+        for (var h=0; h<headers.length; h++){
+          var dh = document.createElement("div");
+          dh.className = "dayhead";
+          dh.textContent = headers[h];
+          heatmapGrid.appendChild(dh);
+        }
+
+        var firstDay = new Date(heatmapCursor.getFullYear(), heatmapCursor.getMonth(), 1);
+        var lastDay = new Date(heatmapCursor.getFullYear(), heatmapCursor.getMonth()+1, 0);
+        var totalDays = lastDay.getDate();
+        var startOffset = (firstDay.getDay() + 6) % 7;
+
+        for (var b=0; b<startOffset; b++){
+          var blank = document.createElement("div");
+          blank.className = "heatcell blank";
+          heatmapGrid.appendChild(blank);
+        }
+
+        for (var day=1; day<=totalDays; day++){
+          (function(dayNum){
+            var dateObj = new Date(heatmapCursor.getFullYear(), heatmapCursor.getMonth(), dayNum);
+            var dateKey = isoFromDate(dateObj);
+            var total = getDayTotal(dateKey);
+            var level = "lvl0";
+            if (total >= 2000) level = "lvl4";
+            else if (total >= 1000) level = "lvl3";
+            else if (total >= 250) level = "lvl2";
+            else if (total > 0) level = "lvl1";
+
+            var cell = document.createElement("div");
+            cell.className = "heatcell " + level + (activeHeatDate === dateKey ? " active" : "");
+            cell.textContent = String(dayNum);
+            cell.title = dateKey + " • " + fmtNum(total) + " palavras";
+            cell.addEventListener("click", function(){
+              activeHeatDate = dateKey;
+              renderHeatmapMeta(dateKey);
+              renderHeatmap();
+            });
+            heatmapGrid.appendChild(cell);
+          })(day);
+        }
+
+        if (!activeHeatDate || activeHeatDate.slice(0,7) !== isoFromDate(firstDay).slice(0,7)){
+          activeHeatDate = null;
+          heatmapMeta.textContent = "Seleciona um dia para ver o detalhe.";
+        }
+      }
+
+      function renderHeatmapMeta(dateKey){
+        var total = getDayTotal(dateKey);
+        var breakdown = getDayProjectBreakdown(dateKey);
+        if (!breakdown.length){ heatmapMeta.textContent = formatDateLong(dateKey) + " • 0 palavras"; return; }
+        var parts = [];
+        for (var i=0; i<breakdown.length; i++) parts.push(breakdown[i].project + ": " + fmtNum(breakdown[i].words));
+        heatmapMeta.innerHTML = "<strong>" + escapeHtml(formatDateLong(dateKey)) + "</strong><br>" + escapeHtml(fmtNum(total) + " palavras • " + parts.join(" • "));
+      }
+
+      function render(){
+        var keys = Object.keys(entries).sort(sortDates);
+        computeStats();
+        renderTable();
+        renderChart(keys);
+        renderHeatmap();
+      }
+
       function buildSocialCaption(){
         var selectedProject = currentProjectName();
         var selectedData = getSelectedProjectProgressData();
         var todayKey = todayISO();
         var todayEntry = getProjectEntry(todayKey, selectedProject);
         var wordsToday = todayEntry ? safeInt(todayEntry.words) : 0;
-
         var keys = Object.keys(entries).sort(sortDates);
         var streakData = computeStreak(keys);
-
+        var forecast = getSelectedProjectRecentPace();
         var lines = [];
         lines.push("Hoje escrevi " + fmtNum(wordsToday) + " palavras em " + selectedProject + " ✍️");
         lines.push("");
         lines.push("🔥 Streak atual: " + streakData.current + " dias");
-
-        if (selectedData.target){
-          lines.push("🎯 " + selectedProject + ": " + fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target) + " palavras (" + selectedData.pct + "%)");
-        } else {
-          lines.push("📝 " + selectedProject + ": " + fmtNum(selectedData.totalWords) + " palavras acumuladas");
-        }
-
-        if (todayEntry && todayEntry.note){
-          lines.push("");
-          lines.push("Nota de hoje: " + todayEntry.note);
-        }
-
+        if (selectedData.target) lines.push("🎯 " + selectedProject + ": " + fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target) + " palavras (" + selectedData.pct + "%)");
+        else lines.push("📝 " + selectedProject + ": " + fmtNum(selectedData.totalWords) + " palavras acumuladas");
+        if (forecast.eta !== null) lines.push("⏳ ETA: " + forecast.eta + " dias");
+        if (todayEntry && todayEntry.note){ lines.push(""); lines.push("Nota de hoje: " + todayEntry.note); }
         lines.push("");
         lines.push("#amwriting #writingcommunity #writerslife #escrita");
         lines.push("@vasco_entre_sonhos");
-
         return lines.join("\n");
       }
 
-      function fallbackCopy(text){
-        var ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
-        alert("Caption copiada.");
+      function fallbackCopy(text){ var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); alert("Caption copiada."); }
+      function copySocialCaption(){ var text = buildSocialCaption(); if (navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ alert("Caption copiada."); }).catch(function(){ fallbackCopy(text); }); } else fallbackCopy(text); }
+      function downloadSocialCaption(){ var text = buildSocialCaption(); var blob = new Blob([text], {type:"text/plain;charset=utf-8"}); var stamp = new Date().toISOString().slice(0,10); downloadBlob(blob, "writing-social-caption_" + stamp + ".txt"); }
+
+      function roundRectPath(c, x, y, w, h, r){ var rr = Math.min(r, w / 2, h / 2); c.beginPath(); c.moveTo(x + rr, y); c.arcTo(x + w, y, x + w, y + h, rr); c.arcTo(x + w, y + h, x, y + h, rr); c.arcTo(x, y + h, x, y, rr); c.arcTo(x, y, x + w, y, rr); c.closePath(); }
+      function drawCardBg(c, W, H){ c.fillStyle = "#0b0b0d"; c.fillRect(0, 0, W, H); var g1 = c.createRadialGradient(180, 80, 0, 180, 80, 420); g1.addColorStop(0, "rgba(255,122,24,0.30)"); g1.addColorStop(1, "rgba(255,122,24,0)"); c.fillStyle = g1; c.fillRect(0, 0, W, H); var g2 = c.createRadialGradient(W - 100, 180, 0, W - 100, 180, 360); g2.addColorStop(0, "rgba(255,122,24,0.18)"); g2.addColorStop(1, "rgba(255,122,24,0)"); c.fillStyle = g2; c.fillRect(0, 0, W, H); }
+      function drawStatCard(c, x, y, w, h, label, value){ roundRectPath(c, x, y, w, h, 26); c.fillStyle = "rgba(255,255,255,0.04)"; c.fill(); c.strokeStyle = "rgba(255,255,255,0.08)"; c.lineWidth = 2; c.stroke(); c.fillStyle = "#b8b8c2"; c.font = "24px Arial"; c.fillText(label, x + 24, y + 38); c.fillStyle = "#f2f2f3"; c.font = "700 42px Arial"; c.fillText(value, x + 24, y + 92); }
+      function getGrandTotal(){ var totals = getProjectTotals(); var names = Object.keys(totals); var out = 0; for (var i=0; i<names.length; i++) out += safeInt(totals[names[i]]); return out; }
+      function getTopProjectInRange(dateKeys){ var counts = {}; for (var i=0; i<dateKeys.length; i++){ var day = entries[dateKeys[i]]; if (!day || !day.projects) continue; var names = Object.keys(day.projects); for (var p=0; p<names.length; p++) counts[names[p]] = (counts[names[p]] || 0) + safeInt(day.projects[names[p]].words); } var bestName = null; var bestVal = 0; var projectNames = Object.keys(counts); for (var j=0; j<projectNames.length; j++){ if (counts[projectNames[j]] > bestVal){ bestVal = counts[projectNames[j]]; bestName = projectNames[j]; } } return { name: bestName, words: bestVal }; }
+
+      function drawMiniSeries(c, x, y, w, h, dateKeys, mode){
+        roundRectPath(c, x, y, w, h, 22);
+        c.fillStyle = "rgba(0,0,0,0.18)";
+        c.fill();
+        c.strokeStyle = "rgba(255,255,255,0.06)";
+        c.lineWidth = 2;
+        c.stroke();
+
+        c.fillStyle = "#f2f2f3";
+        c.font = "700 28px Arial";
+        c.fillText("Evolução", x + 24, y + 42);
+
+        var series = getDailySeries(dateKeys, mode);
+        var wordsSeries = series.wordsSeries;
+        var goalSeries = series.goalSeries;
+        var padL = 72, padR = 28, padT = 70, padB = 56;
+        var plotX = x + padL, plotY = y + padT, plotW = w - padL - padR, plotH = h - padT - padB;
+        var maxVal = 10;
+        for (var i=0; i<wordsSeries.length; i++) if (wordsSeries[i] > maxVal) maxVal = wordsSeries[i];
+        for (i=0; i<goalSeries.length; i++) if (goalSeries[i] !== null && goalSeries[i] > maxVal) maxVal = goalSeries[i];
+
+        for (var gy=0; gy<=4; gy++){
+          var yy = plotY + (plotH * gy / 4);
+          c.strokeStyle = "rgba(255,255,255,0.08)";
+          c.lineWidth = 1;
+          c.beginPath();
+          c.moveTo(plotX, yy);
+          c.lineTo(plotX + plotW, yy);
+          c.stroke();
+          var val = Math.round(maxVal * (1 - gy / 4));
+          c.fillStyle = "#8f8f98";
+          c.font = "18px Arial";
+          c.textAlign = "right";
+          c.textBaseline = "middle";
+          c.fillText(String(val), plotX - 12, yy);
+        }
+
+        function xAt(i){ if (dateKeys.length <= 1) return plotX + plotW/2; return plotX + (plotW * i / (dateKeys.length - 1)); }
+        function yAt(v){ var t = maxVal === 0 ? 0 : v / maxVal; return plotY + plotH * (1 - t); }
+
+        c.strokeStyle = "rgba(255,204,102,0.80)";
+        c.lineWidth = 3;
+        c.setLineDash([8, 8]);
+        for (var k=0; k<goalSeries.length - 1; k++){
+          var a = goalSeries[k], b = goalSeries[k+1];
+          if (a === null || b === null) continue;
+          c.beginPath();
+          c.moveTo(xAt(k), yAt(a));
+          c.lineTo(xAt(k+1), yAt(b));
+          c.stroke();
+        }
+        c.setLineDash([]);
+
+        if (wordsSeries.length){
+          c.strokeStyle = "#ff7a18";
+          c.lineWidth = 5;
+          c.lineJoin = "round";
+          c.lineCap = "round";
+          c.beginPath();
+          for (var p=0; p<wordsSeries.length; p++){
+            var xx = xAt(p), yy2 = yAt(wordsSeries[p]);
+            if (p === 0) c.moveTo(xx, yy2);
+            else c.lineTo(xx, yy2);
+          }
+          c.stroke();
+
+          for (p=0; p<wordsSeries.length; p++){
+            xx = xAt(p); yy2 = yAt(wordsSeries[p]);
+            c.fillStyle = "#ff7a18";
+            c.beginPath();
+            c.arc(xx, yy2, 6, 0, Math.PI*2);
+            c.fill();
+            c.fillStyle = "#0b0b0d";
+            c.beginPath();
+            c.arc(xx, yy2, 2.6, 0, Math.PI*2);
+            c.fill();
+          }
+        }
+
+        c.fillStyle = "#8f8f98";
+        c.font = "18px Arial";
+        c.textAlign = "left";
+        c.textBaseline = "top";
+        if (dateKeys.length){
+          c.fillText(dateKeys[0], plotX, plotY + plotH + 14);
+          if (dateKeys.length > 1){
+            c.textAlign = "right";
+            c.fillText(dateKeys[dateKeys.length - 1], plotX + plotW, plotY + plotH + 14);
+          }
+        }
+
+        c.textAlign = "left";
+        c.fillStyle = "#ff7a18";
+        c.font = "700 20px Arial";
+        c.fillText("Palavras", x + 24, y + h - 18);
+        c.fillStyle = "#ffcc66";
+        c.fillText("Objetivo", x + 150, y + h - 18);
       }
 
-      function copySocialCaption(){
-        var text = buildSocialCaption();
-        if (navigator.clipboard && navigator.clipboard.writeText){
-          navigator.clipboard.writeText(text).then(function(){
-            alert("Caption copiada.");
-          }).catch(function(){
-            fallbackCopy(text);
-          });
+      function exportIGCard(){
+        var out = document.createElement("canvas"); out.width = 1080; out.height = 1350;
+        var c = out.getContext("2d"); var W = out.width, H = out.height; drawCardBg(c, W, H);
+        var keys = Object.keys(entries).sort(sortDates);
+        var streakData = computeStreak(keys);
+        var selectedProject = currentProjectName();
+        var selectedData = getSelectedProjectProgressData();
+        var todayEntry = getProjectEntry(todayISO(), selectedProject);
+        var wordsToday = todayEntry ? safeInt(todayEntry.words) : 0;
+
+        c.fillStyle = "#f2f2f3"; c.font = "700 50px Arial"; c.fillText("Entre Sonhos", 72, 86);
+        c.fillStyle = "#b8b8c2"; c.font = "28px Arial"; c.fillText("Writing Tracker • resumo visual", 72, 124);
+        roundRectPath(c, 72, 154, 320, 46, 23); c.fillStyle = "rgba(255,122,24,0.12)"; c.fill(); c.strokeStyle = "rgba(255,122,24,0.28)"; c.lineWidth = 2; c.stroke();
+        c.fillStyle = "#ff7a18"; c.font = "700 22px Arial"; c.fillText(selectedProject, 92, 184);
+        drawStatCard(c, 72, 236, 288, 126, "Hoje", fmtNum(wordsToday));
+        drawStatCard(c, 396, 236, 288, 126, "Streak", String(streakData.current));
+        drawStatCard(c, 720, 236, 288, 126, "Total", fmtNum(getGrandTotal()));
+
+        roundRectPath(c, 72, 402, 936, 250, 34); c.fillStyle = "rgba(255,255,255,0.04)"; c.fill(); c.strokeStyle = "rgba(255,255,255,0.08)"; c.lineWidth = 2; c.stroke();
+        c.fillStyle = "#f2f2f3"; c.font = "700 38px Arial"; c.fillText("Progresso do projeto", 112, 458);
+        c.fillStyle = "#b8b8c2"; c.font = "24px Arial"; c.fillText(selectedProject, 112, 492);
+        if (selectedData.target){
+          c.fillStyle = "#f2f2f3"; c.font = "700 34px Arial"; c.fillText(fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target), 112, 550);
+          c.fillStyle = "#b8b8c2"; c.font = "24px Arial"; c.fillText(selectedData.pct + "% concluído", 112, 584);
+          roundRectPath(c, 112, 608, 856, 22, 11); c.fillStyle = "rgba(255,255,255,0.08)"; c.fill();
+          roundRectPath(c, 112, 608, Math.max(18, 856 * (selectedData.pct / 100)), 22, 11); c.fillStyle = "#ff7a18"; c.fill();
         } else {
-          fallbackCopy(text);
+          c.fillStyle = "#f2f2f3"; c.font = "700 34px Arial"; c.fillText(fmtNum(selectedData.totalWords) + " palavras", 112, 550);
+          c.fillStyle = "#b8b8c2"; c.font = "24px Arial"; c.fillText("Sem meta definida", 112, 584);
         }
+        drawMiniSeries(c, 72, 690, 936, 520, keys.slice(-14), "selected");
+        c.fillStyle = "rgba(255,255,255,0.55)"; c.font = "24px Arial"; c.textAlign = "right"; c.fillText("@vasco_entre_sonhos", W - 72, H - 54);
+        c.fillStyle = "rgba(255,255,255,0.35)"; c.font = "20px Arial"; c.fillText("Exportado do Writing Tracker", W - 72, H - 24);
+        var a = document.createElement("a"); a.download = "writing-tracker_instagram-card_" + new Date().toISOString().slice(0,10) + ".png"; a.href = out.toDataURL("image/png"); a.click();
       }
 
-      function downloadSocialCaption(){
-        var text = buildSocialCaption();
-        var blob = new Blob([text], {type:"text/plain;charset=utf-8"});
-        var stamp = new Date().toISOString().slice(0,10);
-        downloadBlob(blob, "writing-social-caption_" + stamp + ".txt");
+      function exportStoryCard(){
+        var out = document.createElement("canvas"); out.width = 1080; out.height = 1920;
+        var c = out.getContext("2d"); var W = out.width, H = out.height; drawCardBg(c, W, H);
+        var selectedProject = currentProjectName();
+        var selectedData = getSelectedProjectProgressData();
+        var streakData = computeStreak(Object.keys(entries).sort(sortDates));
+        var todayEntry = getProjectEntry(todayISO(), selectedProject);
+        var wordsToday = todayEntry ? safeInt(todayEntry.words) : 0;
+        var forecast = getSelectedProjectRecentPace();
+
+        c.fillStyle = "#f2f2f3"; c.font = "700 70px Arial"; c.fillText("Hoje escrevi", 72, 140);
+        c.fillStyle = "#ff7a18"; c.font = "700 120px Arial"; c.fillText(fmtNum(wordsToday), 72, 280);
+        c.fillStyle = "#f2f2f3"; c.font = "700 54px Arial"; c.fillText("palavras", 72, 350);
+
+        roundRectPath(c, 72, 420, 360, 56, 28); c.fillStyle = "rgba(255,122,24,0.12)"; c.fill(); c.strokeStyle = "rgba(255,122,24,0.28)"; c.lineWidth = 2; c.stroke();
+        c.fillStyle = "#ff7a18"; c.font = "700 28px Arial"; c.fillText(selectedProject, 102, 458);
+
+        drawStatCard(c, 72, 530, 420, 126, "Streak", String(streakData.current));
+        drawStatCard(c, 516, 530, 492, 126, "Total projeto", fmtNum(selectedData.totalWords));
+
+        roundRectPath(c, 72, 730, 936, 330, 34); c.fillStyle = "rgba(255,255,255,0.04)"; c.fill(); c.strokeStyle = "rgba(255,255,255,0.08)"; c.lineWidth = 2; c.stroke();
+        c.fillStyle = "#f2f2f3"; c.font = "700 42px Arial"; c.fillText("Progresso", 112, 800);
+        if (selectedData.target){
+          c.fillStyle = "#f2f2f3"; c.font = "700 48px Arial"; c.fillText(fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target), 112, 880);
+          c.fillStyle = "#b8b8c2"; c.font = "28px Arial"; c.fillText(selectedData.pct + "% concluído", 112, 925);
+          roundRectPath(c, 112, 965, 856, 26, 13); c.fillStyle = "rgba(255,255,255,0.08)"; c.fill();
+          roundRectPath(c, 112, 965, Math.max(20, 856 * (selectedData.pct / 100)), 26, 13); c.fillStyle = "#ff7a18"; c.fill();
+        } else {
+          c.fillStyle = "#f2f2f3"; c.font = "700 48px Arial"; c.fillText(fmtNum(selectedData.totalWords) + " palavras", 112, 880);
+          c.fillStyle = "#b8b8c2"; c.font = "28px Arial"; c.fillText("Sem meta definida", 112, 925);
+        }
+        c.fillStyle = "#f2f2f3"; c.font = "700 36px Arial"; c.fillText("Previsão", 72, 1150);
+        c.fillStyle = "#b8b8c2"; c.font = "28px Arial";
+        if (forecast.eta !== null) c.fillText("ETA: " + forecast.eta + " dias • " + forecast.dateText, 72, 1205);
+        else c.fillText(forecast.dateText, 72, 1205);
+        c.fillStyle = "rgba(255,255,255,0.55)"; c.font = "30px Arial"; c.textAlign = "right"; c.fillText("@vasco_entre_sonhos", W - 72, H - 86);
+        var a = document.createElement("a"); a.download = "writing-tracker_story_" + new Date().toISOString().slice(0,10) + ".png"; a.href = out.toDataURL("image/png"); a.click();
       }
 
-      function render(){
-        var keys = computeStats();
-        renderTable();
-        renderChart(keys);
+      function getRangeKeys(daysBack){ var dates = Object.keys(entries).sort(sortDates); return dates.slice(-daysBack); }
+
+      function exportWeeklyRecap(){
+        var out = document.createElement("canvas"); out.width = 1080; out.height = 1350;
+        var c = out.getContext("2d"); var W = out.width, H = out.height; drawCardBg(c, W, H);
+        var rangeKeys = getRangeKeys(7);
+        var total = 0, activeDays = rangeKeys.length, bestDay = { date:null, words:0 };
+        for (var i=0; i<rangeKeys.length; i++){ var val = getDayTotal(rangeKeys[i]); total += val; if (val > bestDay.words) bestDay = { date: rangeKeys[i], words: val }; }
+        var avg = activeDays ? Math.round(total / activeDays) : 0;
+        var topProject = getTopProjectInRange(rangeKeys);
+
+        c.fillStyle = "#f2f2f3"; c.font = "700 56px Arial"; c.fillText("Recap semanal", 72, 100);
+        c.fillStyle = "#b8b8c2"; c.font = "26px Arial"; c.fillText("Últimos 7 dias com registo", 72, 140);
+        drawStatCard(c, 72, 190, 288, 126, "Total", fmtNum(total));
+        drawStatCard(c, 396, 190, 288, 126, "Dias", String(activeDays));
+        drawStatCard(c, 720, 190, 288, 126, "Média", fmtNum(avg));
+
+        roundRectPath(c, 72, 360, 936, 180, 28); c.fillStyle = "rgba(255,255,255,0.04)"; c.fill(); c.strokeStyle = "rgba(255,255,255,0.08)"; c.lineWidth = 2; c.stroke();
+        c.fillStyle = "#f2f2f3"; c.font = "700 34px Arial"; c.fillText("Destaques", 112, 420);
+        c.fillStyle = "#b8b8c2"; c.font = "26px Arial";
+        c.fillText("Melhor dia: " + (bestDay.date ? formatDateLong(bestDay.date) + " • " + fmtNum(bestDay.words) + " palavras" : "—"), 112, 470);
+        c.fillText("Top projeto: " + (topProject.name ? topProject.name + " • " + fmtNum(topProject.words) + " palavras" : "—"), 112, 510);
+        drawMiniSeries(c, 72, 580, 936, 660, rangeKeys, "all");
+        c.fillStyle = "rgba(255,255,255,0.55)"; c.font = "24px Arial"; c.textAlign = "right"; c.fillText("@vasco_entre_sonhos", W - 72, H - 54);
+        var a = document.createElement("a"); a.download = "writing-tracker_weekly-recap_" + new Date().toISOString().slice(0,10) + ".png"; a.href = out.toDataURL("image/png"); a.click();
       }
 
-      function normalizeImportedData(data){
-        var cleanedProjects = { "Geral": { target: null } };
-        var cleanedEntries = {};
+      function exportMonthlyRecap(){
+        var out = document.createElement("canvas"); out.width = 1080; out.height = 1350;
+        var c = out.getContext("2d"); var W = out.width, H = out.height; drawCardBg(c, W, H);
+        var year = heatmapCursor.getFullYear();
+        var month = heatmapCursor.getMonth();
+        var first = new Date(year, month, 1);
+        var last = new Date(year, month + 1, 0);
+        var dateKeys = [];
+        for (var d=1; d<=last.getDate(); d++){ var key = isoFromDate(new Date(year, month, d)); if (getDayTotal(key) > 0) dateKeys.push(key); }
+        var total = 0; for (var i=0; i<dateKeys.length; i++) total += getDayTotal(dateKeys[i]);
+        var avg = dateKeys.length ? Math.round(total / dateKeys.length) : 0;
+        var topProject = getTopProjectInRange(dateKeys);
 
-        if (data.projects && typeof data.projects === "object"){
-          for (var projectName in data.projects){
-            if (!projectName) continue;
-            var projectTarget = data.projects[projectName] && data.projects[projectName].target;
-            cleanedProjects[projectName] = {
-              target: (projectTarget === null || projectTarget === undefined || projectTarget === "")
-                ? null
-                : safeInt(projectTarget)
-            };
-          }
+        c.fillStyle = "#f2f2f3"; c.font = "700 56px Arial"; c.fillText("Recap mensal", 72, 100);
+        c.fillStyle = "#b8b8c2"; c.font = "26px Arial"; c.fillText(monthLabel(heatmapCursor), 72, 140);
+        drawStatCard(c, 72, 190, 288, 126, "Total", fmtNum(total));
+        drawStatCard(c, 396, 190, 288, 126, "Dias", String(dateKeys.length));
+        drawStatCard(c, 720, 190, 288, 126, "Média", fmtNum(avg));
+
+        roundRectPath(c, 72, 360, 936, 230, 28); c.fillStyle = "rgba(255,255,255,0.04)"; c.fill(); c.strokeStyle = "rgba(255,255,255,0.08)"; c.lineWidth = 2; c.stroke();
+        c.fillStyle = "#f2f2f3"; c.font = "700 34px Arial"; c.fillText("Resumo do mês", 112, 420);
+        c.fillStyle = "#b8b8c2"; c.font = "26px Arial"; c.fillText("Top projeto: " + (topProject.name ? topProject.name + " • " + fmtNum(topProject.words) + " palavras" : "—"), 112, 470);
+        var monthMilestones = milestoneLog.filter(function(m){ return m.dateUnlocked.slice(0,7) === isoFromDate(first).slice(0,7); }).slice(0,3);
+        if (monthMilestones.length) c.fillText("Milestones: " + monthMilestones.map(function(m){ return m.title; }).join(" • "), 112, 515);
+        else c.fillText("Milestones: nenhum desbloqueado neste mês", 112, 515);
+
+        var hx = 112, hy = 640, cell = 32, gap = 8;
+        c.fillStyle = "#f2f2f3"; c.font = "700 30px Arial"; c.fillText("Heatmap", 72, 610);
+        var startOffset = (first.getDay() + 6) % 7;
+        var headers = ["S","T","Q","Q","S","S","D"];
+        for (var h=0; h<7; h++){ c.fillStyle = "#8f8f98"; c.font = "18px Arial"; c.textAlign = "center"; c.fillText(headers[h], hx + h * (cell + gap) + cell/2, hy - 16); }
+        var x = hx + startOffset * (cell + gap), y = hy;
+        for (var day=1; day<=last.getDate(); day++){
+          var dateKey = isoFromDate(new Date(year, month, day));
+          var totalDay = getDayTotal(dateKey);
+          var fill = "rgba(255,255,255,0.02)";
+          if (totalDay >= 2000) fill = "rgba(255,122,24,0.55)";
+          else if (totalDay >= 1000) fill = "rgba(255,122,24,0.36)";
+          else if (totalDay >= 250) fill = "rgba(255,122,24,0.22)";
+          else if (totalDay > 0) fill = "rgba(255,122,24,0.12)";
+          roundRectPath(c, x, y, cell, cell, 8); c.fillStyle = fill; c.fill(); c.strokeStyle = "rgba(255,255,255,0.06)"; c.lineWidth = 1; c.stroke();
+          c.fillStyle = "#f2f2f3"; c.font = "16px Arial"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(String(day), x + cell/2, y + cell/2);
+          x += cell + gap;
+          if ((day + startOffset) % 7 === 0){ x = hx; y += cell + gap; }
         }
-
-        if (!data.entries || typeof data.entries !== "object"){
-          return { projects: cleanedProjects, entries: cleanedEntries };
-        }
-
-        for (var dateKey in data.entries){
-          if (!/^\d{4}-\d{2}-\d{2}$/.test(dateKey)) continue;
-
-          var rawDay = data.entries[dateKey] || {};
-          var normalizedDayProjects = {};
-
-          // v3
-          if (rawDay.projects && typeof rawDay.projects === "object"){
-            for (var pn in rawDay.projects){
-              var block = rawDay.projects[pn] || {};
-              var safeProjectName = pn || "Geral";
-
-              if (!cleanedProjects[safeProjectName]){
-                cleanedProjects[safeProjectName] = { target: null };
-              }
-
-              normalizedDayProjects[safeProjectName] = {
-                words: safeInt(block.words),
-                goal: (block.goal === null || block.goal === undefined || block.goal === "") ? null : safeInt(block.goal),
-                note: block.note ? String(block.note) : ""
-              };
-            }
-          } else {
-            // v1/v2
-            var legacyProject = rawDay.project ? String(rawDay.project) : "Geral";
-
-            if (!cleanedProjects[legacyProject]){
-              cleanedProjects[legacyProject] = { target: null };
-            }
-
-            normalizedDayProjects[legacyProject] = {
-              words: safeInt(rawDay.words),
-              goal: (rawDay.goal === null || rawDay.goal === undefined || rawDay.goal === "") ? null : safeInt(rawDay.goal),
-              note: rawDay.note ? String(rawDay.note) : ""
-            };
-          }
-
-          if (Object.keys(normalizedDayProjects).length){
-            cleanedEntries[dateKey] = { projects: normalizedDayProjects };
-          }
-        }
-
-        return { projects: cleanedProjects, entries: cleanedEntries };
+        c.fillStyle = "rgba(255,255,255,0.55)"; c.font = "24px Arial"; c.textAlign = "right"; c.textBaseline = "alphabetic"; c.fillText("@vasco_entre_sonhos", W - 72, H - 54);
+        var a = document.createElement("a"); a.download = "writing-tracker_monthly-recap_" + isoFromDate(first).slice(0,7) + ".png"; a.href = out.toDataURL("image/png"); a.click();
       }
 
-      // ------ JSON ------
       function exportJSON(){
-        var payload = {
-          app: "Entre Sonhos — Writing Tracker",
-          version: 3,
-          exportedAt: new Date().toISOString(),
-          projects: projects,
-          entries: entries
-        };
+        var payload = { app: "Entre Sonhos — Writing Tracker", version: 4, exportedAt: new Date().toISOString(), projects: projects, entries: entries, milestoneLog: milestoneLog, milestoneSeen: milestoneSeen };
         var blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
         var stamp = new Date().toISOString().slice(0,10);
         downloadBlob(blob, "writing-tracker_" + stamp + ".json");
@@ -1176,388 +1582,67 @@
         var reader = new FileReader();
         reader.onload = function(){
           var data;
-          try{
-            data = JSON.parse(String(reader.result || ""));
-          }catch(e){
-            alert("JSON inválido.");
-            return;
-          }
-
-          if (!data || typeof data !== "object"){
-            alert("Formato inesperado.");
-            return;
-          }
-
+          try{ data = JSON.parse(String(reader.result || "")); }catch(e){ alert("JSON inválido."); return; }
+          if (!data || typeof data !== "object"){ alert("Formato inesperado."); return; }
           var normalized = normalizeImportedData(data);
           projects = normalized.projects;
           entries = normalized.entries;
+          milestoneLog = Array.isArray(data.milestoneLog) ? data.milestoneLog : [];
+          milestoneSeen = (data.milestoneSeen && typeof data.milestoneSeen === "object") ? data.milestoneSeen : {};
+          detectNewMilestones(todayISO());
           loadedFileName = file.name || "importado.json";
-
+          saveStateLocal();
           renderProjectOptions("Geral");
           render();
-
           var rows = getFlatRows();
-          if (rows.length){
-            loadToForm(rows[rows.length - 1].date, rows[rows.length - 1].project);
-          } else {
-            clearForm();
-          }
+          if (rows.length) loadToForm(rows[rows.length - 1].date, rows[rows.length - 1].project);
+          else clearForm();
         };
         reader.readAsText(file);
       }
 
-function roundRectPath(c, x, y, w, h, r){
-  var rr = Math.min(r, w / 2, h / 2);
-  c.beginPath();
-  c.moveTo(x + rr, y);
-  c.arcTo(x + w, y, x + w, y + h, rr);
-  c.arcTo(x + w, y + h, x, y + h, rr);
-  c.arcTo(x, y + h, x, y, rr);
-  c.arcTo(x, y, x + w, y, rr);
-  c.closePath();
-}
-
-function drawStatCard(c, x, y, w, h, label, value){
-  roundRectPath(c, x, y, w, h, 26);
-  c.fillStyle = "rgba(255,255,255,0.04)";
-  c.fill();
-  c.strokeStyle = "rgba(255,255,255,0.08)";
-  c.lineWidth = 2;
-  c.stroke();
-
-  c.fillStyle = "#b8b8c2";
-  c.font = "24px Arial";
-  c.fillText(label, x + 24, y + 38);
-
-  c.fillStyle = "#f2f2f3";
-  c.font = "700 42px Arial";
-  c.fillText(value, x + 24, y + 92);
-}
-
-function exportPNG(){
-  var out = document.createElement("canvas");
-  out.width = 1080;
-  out.height = 1350;
-  var c = out.getContext("2d");
-
-  var W = out.width;
-  var H = out.height;
-
-  // fundo base
-  c.fillStyle = "#0b0b0d";
-  c.fillRect(0, 0, W, H);
-
-  // glow laranja 1
-  var g1 = c.createRadialGradient(180, 80, 0, 180, 80, 420);
-  g1.addColorStop(0, "rgba(255,122,24,0.30)");
-  g1.addColorStop(1, "rgba(255,122,24,0)");
-  c.fillStyle = g1;
-  c.fillRect(0, 0, W, H);
-
-  // glow laranja 2
-  var g2 = c.createRadialGradient(980, 160, 0, 980, 160, 360);
-  g2.addColorStop(0, "rgba(255,122,24,0.18)");
-  g2.addColorStop(1, "rgba(255,122,24,0)");
-  c.fillStyle = g2;
-  c.fillRect(0, 0, W, H);
-
-  // dados
-  var keys = Object.keys(entries).sort(sortDates);
-  var streakData = computeStreak(keys);
-  var totals = getProjectTotals();
-  var selectedProject = currentProjectName();
-  var selectedData = getSelectedProjectProgressData();
-  var todayKey = todayISO();
-  var todayEntry = getProjectEntry(todayKey, selectedProject);
-  var wordsToday = todayEntry ? safeInt(todayEntry.words) : 0;
-
-  var grandTotal = 0;
-  var projectNames = Object.keys(totals);
-  for (var i = 0; i < projectNames.length; i++){
-    grandTotal += safeInt(totals[projectNames[i]]);
-  }
-
-  // cabeçalho
-  c.fillStyle = "#f2f2f3";
-  c.font = "700 50px Arial";
-  c.fillText("Entre Sonhos", 72, 86);
-
-  c.fillStyle = "#b8b8c2";
-  c.font = "28px Arial";
-  c.fillText("Writing Tracker • resumo visual", 72, 124);
-
-  // pill projeto
-  roundRectPath(c, 72, 154, 260, 46, 23);
-  c.fillStyle = "rgba(255,122,24,0.12)";
-  c.fill();
-  c.strokeStyle = "rgba(255,122,24,0.28)";
-  c.lineWidth = 2;
-  c.stroke();
-
-  c.fillStyle = "#ff7a18";
-  c.font = "700 22px Arial";
-  c.fillText(selectedProject, 92, 184);
-
-  // cards topo
-  drawStatCard(c, 72, 236, 288, 126, "Hoje", fmtNum(wordsToday));
-  drawStatCard(c, 396, 236, 288, 126, "Streak", String(streakData.current));
-  drawStatCard(c, 720, 236, 288, 126, "Total", fmtNum(grandTotal));
-
-  // card principal
-  roundRectPath(c, 72, 402, 936, 804, 34);
-  c.fillStyle = "rgba(255,255,255,0.04)";
-  c.fill();
-  c.strokeStyle = "rgba(255,255,255,0.08)";
-  c.lineWidth = 2;
-  c.stroke();
-
-  c.fillStyle = "#f2f2f3";
-  c.font = "700 38px Arial";
-  c.fillText("Progresso do projeto", 112, 458);
-
-  c.fillStyle = "#b8b8c2";
-  c.font = "24px Arial";
-  c.fillText(selectedProject, 112, 492);
-
-  // progresso
-  if (selectedData.target){
-    c.fillStyle = "#f2f2f3";
-    c.font = "700 34px Arial";
-    c.fillText(
-      fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target),
-      112,
-      550
-    );
-
-    c.fillStyle = "#b8b8c2";
-    c.font = "24px Arial";
-    c.fillText(selectedData.pct + "% concluído", 112, 584);
-
-    roundRectPath(c, 112, 608, 856, 22, 11);
-    c.fillStyle = "rgba(255,255,255,0.08)";
-    c.fill();
-
-    roundRectPath(c, 112, 608, Math.max(18, 856 * (selectedData.pct / 100)), 22, 11);
-    c.fillStyle = "#ff7a18";
-    c.fill();
-  } else {
-    c.fillStyle = "#f2f2f3";
-    c.font = "700 34px Arial";
-    c.fillText(fmtNum(selectedData.totalWords) + " palavras", 112, 550);
-
-    c.fillStyle = "#b8b8c2";
-    c.font = "24px Arial";
-    c.fillText("Sem meta definida", 112, 584);
-  }
-
-  // mini-gráfico
-  var chartX = 112;
-  var chartY = 690;
-  var chartW = 856;
-  var chartH = 390;
-
-  roundRectPath(c, chartX, chartY, chartW, chartH, 24);
-  c.fillStyle = "rgba(0,0,0,0.18)";
-  c.fill();
-  c.strokeStyle = "rgba(255,255,255,0.06)";
-  c.lineWidth = 2;
-  c.stroke();
-
-  c.fillStyle = "#f2f2f3";
-  c.font = "700 28px Arial";
-  c.fillText("Últimos dias", chartX + 24, chartY + 42);
-
-  var lastKeys = keys.slice(-14);
-  var series = getDailySeries(lastKeys);
-  var wordsSeries = series.wordsSeries;
-  var goalSeries = series.goalSeries;
-
-  var padL = 72;
-  var padR = 28;
-  var padT = 70;
-  var padB = 56;
-
-  var plotX = chartX + padL;
-  var plotY = chartY + padT;
-  var plotW = chartW - padL - padR;
-  var plotH = chartH - padT - padB;
-
-  var maxVal = 10;
-  for (var j = 0; j < wordsSeries.length; j++){
-    if (wordsSeries[j] > maxVal) maxVal = wordsSeries[j];
-  }
-  for (j = 0; j < goalSeries.length; j++){
-    if (goalSeries[j] !== null && goalSeries[j] > maxVal) maxVal = goalSeries[j];
-  }
-
-  // grelha
-  for (var gy = 0; gy <= 4; gy++){
-    var y = plotY + (plotH * gy / 4);
-    c.strokeStyle = "rgba(255,255,255,0.08)";
-    c.lineWidth = 1;
-    c.beginPath();
-    c.moveTo(plotX, y);
-    c.lineTo(plotX + plotW, y);
-    c.stroke();
-
-    var val = Math.round(maxVal * (1 - gy / 4));
-    c.fillStyle = "#8f8f98";
-    c.font = "18px Arial";
-    c.textAlign = "right";
-    c.textBaseline = "middle";
-    c.fillText(String(val), plotX - 12, y);
-  }
-
-  function xAt(i){
-    if (lastKeys.length <= 1) return plotX + plotW / 2;
-    return plotX + (plotW * i / (lastKeys.length - 1));
-  }
-
-  function yAt(v){
-    var t = maxVal === 0 ? 0 : v / maxVal;
-    return plotY + plotH * (1 - t);
-  }
-
-  // linha objetivo
-  c.strokeStyle = "rgba(255,204,102,0.80)";
-  c.lineWidth = 3;
-  for (var k = 0; k < goalSeries.length - 1; k++){
-    var gA = goalSeries[k];
-    var gB = goalSeries[k + 1];
-    if (gA === null || gB === null) continue;
-
-    var x1 = xAt(k);
-    var y1 = yAt(gA);
-    var x2 = xAt(k + 1);
-    var y2 = yAt(gB);
-
-    c.beginPath();
-    c.setLineDash([8, 8]);
-    c.moveTo(x1, y1);
-    c.lineTo(x2, y2);
-    c.stroke();
-  }
-  c.setLineDash([]);
-
-  // linha palavras
-  if (wordsSeries.length){
-    c.strokeStyle = "#ff7a18";
-    c.lineWidth = 5;
-    c.lineJoin = "round";
-    c.lineCap = "round";
-    c.beginPath();
-    for (var p = 0; p < wordsSeries.length; p++){
-      var xx = xAt(p);
-      var yy = yAt(wordsSeries[p]);
-      if (p === 0) c.moveTo(xx, yy);
-      else c.lineTo(xx, yy);
-    }
-    c.stroke();
-
-    for (p = 0; p < wordsSeries.length; p++){
-      xx = xAt(p);
-      yy = yAt(wordsSeries[p]);
-      c.fillStyle = "#ff7a18";
-      c.beginPath();
-      c.arc(xx, yy, 6, 0, Math.PI * 2);
-      c.fill();
-
-      c.fillStyle = "#0b0b0d";
-      c.beginPath();
-      c.arc(xx, yy, 2.6, 0, Math.PI * 2);
-      c.fill();
-    }
-  } else {
-    c.fillStyle = "#8f8f98";
-    c.font = "24px Arial";
-    c.textAlign = "center";
-    c.textBaseline = "middle";
-    c.fillText("Sem dados suficientes para gráfico.", chartX + chartW / 2, chartY + chartH / 2);
-  }
-
-  // labels X
-  c.fillStyle = "#8f8f98";
-  c.font = "18px Arial";
-  c.textAlign = "left";
-  c.textBaseline = "top";
-  if (lastKeys.length){
-    c.fillText(lastKeys[0], plotX, plotY + plotH + 14);
-    if (lastKeys.length > 1){
-      c.textAlign = "right";
-      c.fillText(lastKeys[lastKeys.length - 1], plotX + plotW, plotY + plotH + 14);
-    }
-  }
-
-  // legenda pequena
-  c.textAlign = "left";
-  c.fillStyle = "#ff7a18";
-  c.font = "700 20px Arial";
-  c.fillText("Palavras", chartX + 24, chartY + chartH - 18);
-
-  c.fillStyle = "#ffcc66";
-  c.fillText("Objetivo", chartX + 150, chartY + chartH - 18);
-
-  // footer
-  c.fillStyle = "rgba(255,255,255,0.55)";
-  c.font = "24px Arial";
-  c.textAlign = "right";
-  c.fillText("@vasco_entre_sonhos", W - 72, H - 54);
-
-  c.fillStyle = "rgba(255,255,255,0.35)";
-  c.font = "20px Arial";
-  c.fillText("Exportado do Writing Tracker", W - 72, H - 24);
-
-  var a = document.createElement("a");
-  a.download = "writing-tracker_instagram-card_" + new Date().toISOString().slice(0,10) + ".png";
-  a.href = out.toDataURL("image/png");
-  a.click();
-}
-
-      // ------ Ligações ------
       dateEl.value = todayISO();
-      renderProjectOptions("Geral");
-      clearForm();
-
       saveBtn.addEventListener("click", saveEntry);
-      clearBtn.addEventListener("click", clearForm);
+      clearBtn.addEventListener("click", function(){ clearForm(true); });
       deleteBtn.addEventListener("click", deleteEntry);
       addProjectBtn.addEventListener("click", addProject);
-
       projectEl.addEventListener("change", function(){
         syncProjectTargetInput();
-
         var dateKey = currentFormKey();
         var project = currentProjectName();
         var block = getProjectEntry(dateKey, project);
-
-        if (block){
-          loadToForm(dateKey, project);
-        } else {
-          wordsEl.value = "";
-          goalEl.value = "";
-          noteEl.value = "";
-        }
-
+        if (block) loadToForm(dateKey, project);
+        else { wordsEl.value = ""; goalEl.value = ""; noteEl.value = ""; if (entryModeEl.value === "edit") entryModeEl.value = "add"; }
+        saveStateLocal();
         render();
       });
-
+      dateEl.addEventListener("change", function(){
+        var dateKey = currentFormKey();
+        var project = currentProjectName();
+        var block = getProjectEntry(dateKey, project);
+        if (block) loadToForm(dateKey, project);
+        else { wordsEl.value = ""; goalEl.value = ""; noteEl.value = ""; if (entryModeEl.value === "edit") entryModeEl.value = "add"; }
+        render();
+      });
+      entryModeEl.addEventListener("change", function(){ if (entryModeEl.value === "edit"){ var block = getProjectEntry(currentFormKey(), currentProjectName()); if (block) loadToForm(currentFormKey(), currentProjectName()); } else { wordsEl.value = ""; noteEl.value = ""; } });
+      chartModeEl.addEventListener("change", render);
       exportJsonBtn.addEventListener("click", exportJSON);
-
-      importJsonBtn.addEventListener("click", function(){
-        importFile.click();
-      });
-
-      importFile.addEventListener("change", function(e){
-        var file = e.target.files && e.target.files[0];
-        if (!file) return;
-        importJSON(file);
-        importFile.value = "";
-      });
-
-      exportPngBtn.addEventListener("click", exportPNG);
+      importJsonBtn.addEventListener("click", function(){ importFile.click(); });
+      importFile.addEventListener("change", function(e){ var file = e.target.files && e.target.files[0]; if (!file) return; importJSON(file); importFile.value = ""; });
+      exportIgBtn.addEventListener("click", exportIGCard);
+      exportStoryBtn.addEventListener("click", exportStoryCard);
+      exportWeekBtn.addEventListener("click", exportWeeklyRecap);
+      exportMonthBtn.addEventListener("click", exportMonthlyRecap);
       copySocialBtn.addEventListener("click", copySocialCaption);
       downloadSocialBtn.addEventListener("click", downloadSocialCaption);
+      heatPrevBtn.addEventListener("click", function(){ heatmapCursor = new Date(heatmapCursor.getFullYear(), heatmapCursor.getMonth() - 1, 1); activeHeatDate = null; renderHeatmap(); saveStateLocal(); });
+      heatNextBtn.addEventListener("click", function(){ heatmapCursor = new Date(heatmapCursor.getFullYear(), heatmapCursor.getMonth() + 1, 1); activeHeatDate = null; renderHeatmap(); saveStateLocal(); });
 
+      var loaded = loadStateLocal();
+      if (!loaded) detectNewMilestones(todayISO());
+      else detectNewMilestones(todayISO());
+      renderProjectOptions("Geral");
+      clearForm(true);
       render();
     });
   </script>
