@@ -7,7 +7,7 @@
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="icon" type="image/png" href="icon-192.png">
   <meta name="theme-color" content="#0b0b0d">
-  <title>Entre Sonhos — Writing Tracker</title>
+  <title>Entre Sonhos â€” Writing Tracker</title>
   <style>
     :root{
       --bg:#0b0b0d;
@@ -287,8 +287,8 @@
   <div class="wrap">
     <header>
       <div>
-        <h1>Entre Sonhos — Writing Tracker</h1>
-        <div class="sub">Fase 1 completa • projetos • streak • heatmap • milestones • exports sociais • previsão</div>
+        <h1>Entre Sonhos â€” Writing Tracker</h1>
+        <div class="sub">Fase 1 completa â€¢ projetos â€¢ streak â€¢ heatmap â€¢ milestones â€¢ exports sociais â€¢ previsÃ£o</div>
       </div>
       <div class="small">Marca: <strong>@vasco_entre_sonhos</strong></div>
     </header>
@@ -308,7 +308,7 @@
           <div>
             <label for="entryMode">Modo</label>
             <select id="entryMode">
-              <option value="add">Adicionar sessão</option>
+              <option value="add">Adicionar sessÃ£o</option>
               <option value="edit">Editar agregado</option>
             </select>
           </div>
@@ -331,7 +331,7 @@
             <input id="projectTarget" type="number" min="0" step="1" placeholder="ex.: 85000" />
           </div>
           <div>
-            <label for="chartMode">Gráfico</label>
+            <label for="chartMode">GrÃ¡fico</label>
             <select id="chartMode">
               <option value="selected">Projeto selecionado</option>
               <option value="all">Todos os projetos</option>
@@ -350,7 +350,7 @@
         </div>
 
         <label for="note">Nota (opcional)</label>
-        <textarea id="note" placeholder="Uma linha sobre como correu, o que mudas amanhã, etc."></textarea>
+        <textarea id="note" placeholder="Uma linha sobre como correu, o que mudas amanhÃ£, etc."></textarea>
 
         <div class="btns">
           <button class="primary" id="saveBtn">Guardar</button>
@@ -377,39 +377,39 @@
         </div>
 
         <div class="hint">
-          <strong>Adicionar sessão</strong> soma palavras ao mesmo projeto/data.<br>
+          <strong>Adicionar sessÃ£o</strong> soma palavras ao mesmo projeto/data.<br>
           <strong>Editar agregado</strong> substitui o total desse bloco.
         </div>
 
         <div class="stats">
           <div class="stat"><div class="k">Total</div><div class="v" id="totalOut">0</div></div>
-          <div class="stat"><div class="k">Média / dia</div><div class="v" id="avgOut">0</div></div>
+          <div class="stat"><div class="k">MÃ©dia / dia</div><div class="v" id="avgOut">0</div></div>
           <div class="stat"><div class="k">Dias registados</div><div class="v" id="daysOut">0</div></div>
           <div class="stat"><div class="k">% objetivos cumpridos</div><div class="v" id="goalPctOut">0%</div></div>
           <div class="stat"><div class="k">Streak atual</div><div class="v" id="streakOut">0</div></div>
           <div class="stat"><div class="k">Melhor streak</div><div class="v" id="bestStreakOut">0</div></div>
-          <div class="stat"><div class="k">Projeto selecionado</div><div class="v" id="currentProjectOut">—</div></div>
-          <div class="stat"><div class="k">Progresso selecionado</div><div class="v" id="projectProgressOut">—</div></div>
+          <div class="stat"><div class="k">Projeto selecionado</div><div class="v" id="currentProjectOut">â€”</div></div>
+          <div class="stat"><div class="k">Progresso selecionado</div><div class="v" id="projectProgressOut">â€”</div></div>
         </div>
 
         <div id="projectProgressBox"></div>
 
         <div class="progress-wrap" style="margin-top:16px">
           <div class="progress-head">
-            <strong>Previsão de conclusão</strong>
-            <span class="small">Baseada nos últimos 14 dias com escrita</span>
+            <strong>PrevisÃ£o de conclusÃ£o</strong>
+            <span class="small">Baseada nos Ãºltimos 14 dias com escrita</span>
           </div>
           <div class="forecast-wrap">
             <div class="stat">
-              <div class="k">Ritmo médio</div>
-              <div class="v" id="forecastPaceOut">—</div>
+              <div class="k">Ritmo mÃ©dio</div>
+              <div class="v" id="forecastPaceOut">â€”</div>
             </div>
             <div class="stat">
               <div class="k">ETA</div>
-              <div class="v" id="forecastEtaOut">—</div>
+              <div class="v" id="forecastEtaOut">â€”</div>
             </div>
           </div>
-          <div class="small" id="forecastMetaOut" style="margin-top:10px">—</div>
+          <div class="small" id="forecastMetaOut" style="margin-top:10px">â€”</div>
         </div>
 
         <div class="progress-wrap" style="margin-top:16px">
@@ -422,8 +422,8 @@
 
         <div class="brand">
           <span>Entre Sonhos</span>
-          <span class="filemeta">Ficheiro: <span id="fileNameOut">—</span></span>
-          <span class="filemeta">Backup local automático ativo</span>
+          <span class="filemeta">Ficheiro: <span id="fileNameOut">â€”</span></span>
+          <span class="filemeta">Backup local automÃ¡tico ativo</span>
         </div>
       </section>
 
@@ -431,7 +431,7 @@
         <section class="card">
           <div class="topline">
             <div>
-              <h2 style="margin:0">Evolução</h2>
+              <h2 style="margin:0">EvoluÃ§Ã£o</h2>
               <div class="small">Clica numa linha da tabela para carregar esse bloco.</div>
             </div>
             <div class="inline-badge" id="chartContextOut">Projeto selecionado</div>
@@ -446,12 +446,12 @@
           <div class="heatmap-head">
             <div>
               <h2 style="margin:0">Heatmap mensal</h2>
-              <div class="small">Consistência visual por dia</div>
+              <div class="small">ConsistÃªncia visual por dia</div>
             </div>
             <div class="btns" style="margin-top:0">
-              <button id="heatPrevBtn" class="ghost">◀</button>
-              <span class="inline-badge" id="heatMonthLabel">—</span>
-              <button id="heatNextBtn" class="ghost">▶</button>
+              <button id="heatPrevBtn" class="ghost">â—€</button>
+              <span class="inline-badge" id="heatMonthLabel">â€”</span>
+              <button id="heatNextBtn" class="ghost">â–¶</button>
             </div>
           </div>
 
@@ -474,7 +474,7 @@
           <div class="topline">
             <div>
               <h2 style="margin:0">Registos</h2>
-              <div class="small">Agregação por data + projeto.</div>
+              <div class="small">AgregaÃ§Ã£o por data + projeto.</div>
             </div>
           </div>
 
@@ -484,7 +484,7 @@
                 <tr>
                   <th style="min-width:110px">Data</th>
                   <th style="min-width:120px">Projeto</th>
-                  <th style="min-width:90px">Sessões</th>
+                  <th style="min-width:90px">SessÃµes</th>
                   <th style="min-width:90px">Palavras</th>
                   <th style="min-width:90px">Objetivo</th>
                   <th style="min-width:110px">Estado</th>
@@ -505,7 +505,7 @@
       var projects = { "Geral": { target: null } };
       var milestoneLog = [];
       var milestoneSeen = {};
-      var loadedFileName = "—";
+      var loadedFileName = "â€”";
       var STORAGE_KEY = "entre-sonhos-writing-tracker-v4";
       var heatmapCursor = new Date();
       heatmapCursor = new Date(heatmapCursor.getFullYear(), heatmapCursor.getMonth(), 1);
@@ -773,7 +773,7 @@
       function addProject(){
         var name = (newProjectNameEl.value || "").trim();
         if (!name){ alert("Escreve o nome do projeto."); return; }
-        if (projects[name]){ projectEl.value = name; syncProjectTargetInput(); alert("Esse projeto já existe."); return; }
+        if (projects[name]){ projectEl.value = name; syncProjectTargetInput(); alert("Esse projeto jÃ¡ existe."); return; }
         projects[name] = { target: null };
         renderProjectOptions(name);
         newProjectNameEl.value = "";
@@ -827,7 +827,7 @@
         var dateKey = currentFormKey();
         var project = currentProjectName();
         if (!dateKey) return;
-        if (!entries[dateKey] || !entries[dateKey].projects || !entries[dateKey].projects[project]){ alert("Não existe registo para esse projeto nessa data."); return; }
+        if (!entries[dateKey] || !entries[dateKey].projects || !entries[dateKey].projects[project]){ alert("NÃ£o existe registo para esse projeto nessa data."); return; }
         if (!confirm("Apagar o projeto '" + project + "' na data " + dateKey + "?")) return;
         delete entries[dateKey].projects[project];
         if (Object.keys(entries[dateKey].projects).length === 0) delete entries[dateKey];
@@ -914,12 +914,12 @@
         var pace = Math.round(sum / recent.length);
         var selectedData = getSelectedProjectProgressData();
         if (!selectedData.target || pace <= 0){
-          return { pace: pace, eta: null, remaining: null, target: selectedData.target, dateText: selectedData.target ? "Sem ritmo suficiente para previsão." : "Projeto sem meta definida." };
+          return { pace: pace, eta: null, remaining: null, target: selectedData.target, dateText: selectedData.target ? "Sem ritmo suficiente para previsÃ£o." : "Projeto sem meta definida." };
         }
         var remaining = Math.max(0, selectedData.target - selectedData.totalWords);
         var daysToFinish = Math.ceil(remaining / pace);
         var etaDate = addDays(new Date(), daysToFinish);
-        return { pace: pace, eta: daysToFinish, remaining: remaining, target: selectedData.target, dateText: remaining === 0 ? "Projeto concluído." : formatDateLong(isoFromDate(etaDate)) };
+        return { pace: pace, eta: daysToFinish, remaining: remaining, target: selectedData.target, dateText: remaining === 0 ? "Projeto concluÃ­do." : formatDateLong(isoFromDate(etaDate)) };
       }
 
       function currentAchievements(){
@@ -945,7 +945,7 @@
         var streakData = computeStreak(Object.keys(entries).sort(sortDates));
         var streakThresholds = [7, 30, 100];
         for (var s=0; s<streakThresholds.length; s++){
-          if (streakData.best >= streakThresholds[s]) achievements.push({ id: "streak_" + streakThresholds[s], title: "Streak de " + streakThresholds[s] + " dias", subtitle: "Marco de consistência", dateUnlocked: todayISO() });
+          if (streakData.best >= streakThresholds[s]) achievements.push({ id: "streak_" + streakThresholds[s], title: "Streak de " + streakThresholds[s] + " dias", subtitle: "Marco de consistÃªncia", dateUnlocked: todayISO() });
         }
         return achievements;
       }
@@ -1013,11 +1013,11 @@
         goalPctOut.textContent = goalPct + "%";
         streakOut.textContent = String(streakData.current);
         bestStreakOut.textContent = String(streakData.best);
-        fileNameOut.textContent = loadedFileName || "—";
-        forecastPaceOut.textContent = forecast.pace ? (fmtNum(forecast.pace) + "/dia") : "—";
-        if (forecast.eta === null && forecast.remaining === 0) forecastEtaOut.textContent = "Concluído";
+        fileNameOut.textContent = loadedFileName || "â€”";
+        forecastPaceOut.textContent = forecast.pace ? (fmtNum(forecast.pace) + "/dia") : "â€”";
+        if (forecast.eta === null && forecast.remaining === 0) forecastEtaOut.textContent = "ConcluÃ­do";
         else if (forecast.eta !== null) forecastEtaOut.textContent = forecast.eta + " dias";
-        else forecastEtaOut.textContent = "—";
+        else forecastEtaOut.textContent = "â€”";
         forecastMetaOut.textContent = forecast.dateText;
 
         renderProjectProgressBox();
@@ -1062,7 +1062,7 @@
             html += '<div class="progress-wrap"><div class="progress-head"><strong>' + escapeHtml(name) + '</strong><span class="small">Sem meta definida</span></div><div class="small">' + fmtNum(totalWords) + ' palavras acumuladas</div></div>';
           } else {
             var pct = Math.min(100, Math.round((totalWords / target) * 100));
-            html += '<div class="progress-wrap"><div class="progress-head"><strong>' + escapeHtml(name) + '</strong><span class="small">' + fmtNum(totalWords) + ' / ' + fmtNum(target) + ' palavras</span></div><div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div><div class="small" style="margin-top:8px">' + pct + '% concluído</div></div>';
+            html += '<div class="progress-wrap"><div class="progress-head"><strong>' + escapeHtml(name) + '</strong><span class="small">' + fmtNum(totalWords) + ' / ' + fmtNum(target) + ' palavras</span></div><div class="progress-bar"><div class="progress-fill" style="width:' + pct + '%"></div></div><div class="small" style="margin-top:8px">' + pct + '% concluÃ­do</div></div>';
           }
         }
         projectProgressBox.innerHTML = html;
@@ -1079,7 +1079,7 @@
             "<td><span class='project-tag'>" + escapeHtml(r.project) + "</span></td>" +
             "<td>" + fmtNum(r.sessions) + "</td>" +
             "<td>" + fmtNum(r.words) + "</td>" +
-            "<td>" + (r.goal === null ? "—" : fmtNum(r.goal)) + "</td>" +
+            "<td>" + (r.goal === null ? "â€”" : fmtNum(r.goal)) + "</td>" +
             "<td>" + statusPill(r.words, r.goal) + "</td>" +
             "<td>" + escapeHtml(r.note) + "</td>";
           (function(dateKey, projectName){ tr.addEventListener("click", function(){ loadToForm(dateKey, projectName); render(); }); })(r.date, r.project);
@@ -1148,7 +1148,7 @@
           ctx.font = "26px system-ui, -apple-system, Segoe UI, Roboto, Arial";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText("Sem dados — adiciona uma entrada para veres o gráfico.", W/2, H/2);
+          ctx.fillText("Sem dados â€” adiciona uma entrada para veres o grÃ¡fico.", W/2, H/2);
           ctx.restore();
           return;
         }
@@ -1222,7 +1222,7 @@
       function renderHeatmap(){
         heatMonthLabel.textContent = monthLabel(heatmapCursor);
         heatmapGrid.innerHTML = "";
-        var headers = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+        var headers = ["Seg", "Ter", "Qua", "Qui", "Sex", "SÃ¡b", "Dom"];
         for (var h=0; h<headers.length; h++){
           var dh = document.createElement("div");
           dh.className = "dayhead";
@@ -1255,7 +1255,7 @@
             var cell = document.createElement("div");
             cell.className = "heatcell " + level + (activeHeatDate === dateKey ? " active" : "");
             cell.textContent = String(dayNum);
-            cell.title = dateKey + " • " + fmtNum(total) + " palavras";
+            cell.title = dateKey + " â€¢ " + fmtNum(total) + " palavras";
             cell.addEventListener("click", function(){
               activeHeatDate = dateKey;
               renderHeatmapMeta(dateKey);
@@ -1274,10 +1274,10 @@
       function renderHeatmapMeta(dateKey){
         var total = getDayTotal(dateKey);
         var breakdown = getDayProjectBreakdown(dateKey);
-        if (!breakdown.length){ heatmapMeta.textContent = formatDateLong(dateKey) + " • 0 palavras"; return; }
+        if (!breakdown.length){ heatmapMeta.textContent = formatDateLong(dateKey) + " â€¢ 0 palavras"; return; }
         var parts = [];
         for (var i=0; i<breakdown.length; i++) parts.push(breakdown[i].project + ": " + fmtNum(breakdown[i].words));
-        heatmapMeta.innerHTML = "<strong>" + escapeHtml(formatDateLong(dateKey)) + "</strong><br>" + escapeHtml(fmtNum(total) + " palavras • " + parts.join(" • "));
+        heatmapMeta.innerHTML = "<strong>" + escapeHtml(formatDateLong(dateKey)) + "</strong><br>" + escapeHtml(fmtNum(total) + " palavras â€¢ " + parts.join(" â€¢ "));
       }
 
       function render(){
@@ -1298,12 +1298,12 @@
         var streakData = computeStreak(keys);
         var forecast = getSelectedProjectRecentPace();
         var lines = [];
-        lines.push("Hoje escrevi " + fmtNum(wordsToday) + " palavras em " + selectedProject + " ✍️");
+        lines.push("Hoje escrevi " + fmtNum(wordsToday) + " palavras em " + selectedProject + " âœï¸");
         lines.push("");
-        lines.push("🔥 Streak atual: " + streakData.current + " dias");
-        if (selectedData.target) lines.push("🎯 " + selectedProject + ": " + fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target) + " palavras (" + selectedData.pct + "%)");
-        else lines.push("📝 " + selectedProject + ": " + fmtNum(selectedData.totalWords) + " palavras acumuladas");
-        if (forecast.eta !== null) lines.push("⏳ ETA: " + forecast.eta + " dias");
+        lines.push("ðŸ”¥ Streak atual: " + streakData.current + " dias");
+        if (selectedData.target) lines.push("ðŸŽ¯ " + selectedProject + ": " + fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target) + " palavras (" + selectedData.pct + "%)");
+        else lines.push("ðŸ“ " + selectedProject + ": " + fmtNum(selectedData.totalWords) + " palavras acumuladas");
+        if (forecast.eta !== null) lines.push("â³ ETA: " + forecast.eta + " dias");
         if (todayEntry && todayEntry.note){ lines.push(""); lines.push("Nota de hoje: " + todayEntry.note); }
         lines.push("");
         lines.push("#amwriting #writingcommunity #writerslife #escrita");
@@ -1331,7 +1331,7 @@
 
         c.fillStyle = "#f2f2f3";
         c.font = "700 28px Arial";
-        c.fillText("Evolução", x + 24, y + 42);
+        c.fillText("EvoluÃ§Ã£o", x + 24, y + 42);
 
         var series = getDailySeries(dateKeys, mode);
         var wordsSeries = series.wordsSeries;
@@ -1431,7 +1431,7 @@
         var wordsToday = todayEntry ? safeInt(todayEntry.words) : 0;
 
         c.fillStyle = "#f2f2f3"; c.font = "700 50px Arial"; c.fillText("Entre Sonhos", 72, 86);
-        c.fillStyle = "#b8b8c2"; c.font = "28px Arial"; c.fillText("Writing Tracker • resumo visual", 72, 124);
+        c.fillStyle = "#b8b8c2"; c.font = "28px Arial"; c.fillText("Writing Tracker â€¢ resumo visual", 72, 124);
         roundRectPath(c, 72, 154, 320, 46, 23); c.fillStyle = "rgba(255,122,24,0.12)"; c.fill(); c.strokeStyle = "rgba(255,122,24,0.28)"; c.lineWidth = 2; c.stroke();
         c.fillStyle = "#ff7a18"; c.font = "700 22px Arial"; c.fillText(selectedProject, 92, 184);
         drawStatCard(c, 72, 236, 288, 126, "Hoje", fmtNum(wordsToday));
@@ -1443,7 +1443,7 @@
         c.fillStyle = "#b8b8c2"; c.font = "24px Arial"; c.fillText(selectedProject, 112, 492);
         if (selectedData.target){
           c.fillStyle = "#f2f2f3"; c.font = "700 34px Arial"; c.fillText(fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target), 112, 550);
-          c.fillStyle = "#b8b8c2"; c.font = "24px Arial"; c.fillText(selectedData.pct + "% concluído", 112, 584);
+          c.fillStyle = "#b8b8c2"; c.font = "24px Arial"; c.fillText(selectedData.pct + "% concluÃ­do", 112, 584);
           roundRectPath(c, 112, 608, 856, 22, 11); c.fillStyle = "rgba(255,255,255,0.08)"; c.fill();
           roundRectPath(c, 112, 608, Math.max(18, 856 * (selectedData.pct / 100)), 22, 11); c.fillStyle = "#ff7a18"; c.fill();
         } else {
@@ -1480,16 +1480,16 @@
         c.fillStyle = "#f2f2f3"; c.font = "700 42px Arial"; c.fillText("Progresso", 112, 800);
         if (selectedData.target){
           c.fillStyle = "#f2f2f3"; c.font = "700 48px Arial"; c.fillText(fmtNum(selectedData.totalWords) + " / " + fmtNum(selectedData.target), 112, 880);
-          c.fillStyle = "#b8b8c2"; c.font = "28px Arial"; c.fillText(selectedData.pct + "% concluído", 112, 925);
+          c.fillStyle = "#b8b8c2"; c.font = "28px Arial"; c.fillText(selectedData.pct + "% concluÃ­do", 112, 925);
           roundRectPath(c, 112, 965, 856, 26, 13); c.fillStyle = "rgba(255,255,255,0.08)"; c.fill();
           roundRectPath(c, 112, 965, Math.max(20, 856 * (selectedData.pct / 100)), 26, 13); c.fillStyle = "#ff7a18"; c.fill();
         } else {
           c.fillStyle = "#f2f2f3"; c.font = "700 48px Arial"; c.fillText(fmtNum(selectedData.totalWords) + " palavras", 112, 880);
           c.fillStyle = "#b8b8c2"; c.font = "28px Arial"; c.fillText("Sem meta definida", 112, 925);
         }
-        c.fillStyle = "#f2f2f3"; c.font = "700 36px Arial"; c.fillText("Previsão", 72, 1150);
+        c.fillStyle = "#f2f2f3"; c.font = "700 36px Arial"; c.fillText("PrevisÃ£o", 72, 1150);
         c.fillStyle = "#b8b8c2"; c.font = "28px Arial";
-        if (forecast.eta !== null) c.fillText("ETA: " + forecast.eta + " dias • " + forecast.dateText, 72, 1205);
+        if (forecast.eta !== null) c.fillText("ETA: " + forecast.eta + " dias â€¢ " + forecast.dateText, 72, 1205);
         else c.fillText(forecast.dateText, 72, 1205);
         c.fillStyle = "rgba(255,255,255,0.55)"; c.font = "30px Arial"; c.textAlign = "right"; c.fillText("@vasco_entre_sonhos", W - 72, H - 86);
         var a = document.createElement("a"); a.download = "writing-tracker_story_" + new Date().toISOString().slice(0,10) + ".png"; a.href = out.toDataURL("image/png"); a.click();
@@ -1507,16 +1507,16 @@
         var topProject = getTopProjectInRange(rangeKeys);
 
         c.fillStyle = "#f2f2f3"; c.font = "700 56px Arial"; c.fillText("Recap semanal", 72, 100);
-        c.fillStyle = "#b8b8c2"; c.font = "26px Arial"; c.fillText("Últimos 7 dias com registo", 72, 140);
+        c.fillStyle = "#b8b8c2"; c.font = "26px Arial"; c.fillText("Ãšltimos 7 dias com registo", 72, 140);
         drawStatCard(c, 72, 190, 288, 126, "Total", fmtNum(total));
         drawStatCard(c, 396, 190, 288, 126, "Dias", String(activeDays));
-        drawStatCard(c, 720, 190, 288, 126, "Média", fmtNum(avg));
+        drawStatCard(c, 720, 190, 288, 126, "MÃ©dia", fmtNum(avg));
 
         roundRectPath(c, 72, 360, 936, 180, 28); c.fillStyle = "rgba(255,255,255,0.04)"; c.fill(); c.strokeStyle = "rgba(255,255,255,0.08)"; c.lineWidth = 2; c.stroke();
         c.fillStyle = "#f2f2f3"; c.font = "700 34px Arial"; c.fillText("Destaques", 112, 420);
         c.fillStyle = "#b8b8c2"; c.font = "26px Arial";
-        c.fillText("Melhor dia: " + (bestDay.date ? formatDateLong(bestDay.date) + " • " + fmtNum(bestDay.words) + " palavras" : "—"), 112, 470);
-        c.fillText("Top projeto: " + (topProject.name ? topProject.name + " • " + fmtNum(topProject.words) + " palavras" : "—"), 112, 510);
+        c.fillText("Melhor dia: " + (bestDay.date ? formatDateLong(bestDay.date) + " â€¢ " + fmtNum(bestDay.words) + " palavras" : "â€”"), 112, 470);
+        c.fillText("Top projeto: " + (topProject.name ? topProject.name + " â€¢ " + fmtNum(topProject.words) + " palavras" : "â€”"), 112, 510);
         drawMiniSeries(c, 72, 580, 936, 660, rangeKeys, "all");
         c.fillStyle = "rgba(255,255,255,0.55)"; c.font = "24px Arial"; c.textAlign = "right"; c.fillText("@vasco_entre_sonhos", W - 72, H - 54);
         var a = document.createElement("a"); a.download = "writing-tracker_weekly-recap_" + new Date().toISOString().slice(0,10) + ".png"; a.href = out.toDataURL("image/png"); a.click();
@@ -1539,20 +1539,30 @@
         c.fillStyle = "#b8b8c2"; c.font = "26px Arial"; c.fillText(monthLabel(heatmapCursor), 72, 140);
         drawStatCard(c, 72, 190, 288, 126, "Total", fmtNum(total));
         drawStatCard(c, 396, 190, 288, 126, "Dias", String(dateKeys.length));
-        drawStatCard(c, 720, 190, 288, 126, "Média", fmtNum(avg));
+        drawStatCard(c, 720, 190, 288, 126, "MÃ©dia", fmtNum(avg));
 
         roundRectPath(c, 72, 360, 936, 230, 28); c.fillStyle = "rgba(255,255,255,0.04)"; c.fill(); c.strokeStyle = "rgba(255,255,255,0.08)"; c.lineWidth = 2; c.stroke();
-        c.fillStyle = "#f2f2f3"; c.font = "700 34px Arial"; c.fillText("Resumo do mês", 112, 420);
-        c.fillStyle = "#b8b8c2"; c.font = "26px Arial"; c.fillText("Top projeto: " + (topProject.name ? topProject.name + " • " + fmtNum(topProject.words) + " palavras" : "—"), 112, 470);
+        c.fillStyle = "#f2f2f3"; c.font = "700 34px Arial"; c.fillText("Resumo do mÃªs", 112, 420);
+        c.fillStyle = "#b8b8c2"; c.font = "26px Arial"; c.fillText("Top projeto: " + (topProject.name ? topProject.name + " â€¢ " + fmtNum(topProject.words) + " palavras" : "â€”"), 112, 470);
         var monthMilestones = milestoneLog.filter(function(m){ return m.dateUnlocked.slice(0,7) === isoFromDate(first).slice(0,7); }).slice(0,3);
-        if (monthMilestones.length) c.fillText("Milestones: " + monthMilestones.map(function(m){ return m.title; }).join(" • "), 112, 515);
-        else c.fillText("Milestones: nenhum desbloqueado neste mês", 112, 515);
+        if (monthMilestones.length) c.fillText("Milestones: " + monthMilestones.map(function(m){ return m.title; }).join(" â€¢ "), 112, 515);
+        else c.fillText("Milestones: nenhum desbloqueado neste mÃªs", 112, 515);
 
-        var hx = 112, hy = 640, cell = 32, gap = 8;
-        c.fillStyle = "#f2f2f3"; c.font = "700 30px Arial"; c.fillText("Heatmap", 72, 610);
+        roundRectPath(c, 72, 620, 936, 420, 28); c.fillStyle = "rgba(255,255,255,0.04)"; c.fill(); c.strokeStyle = "rgba(255,255,255,0.08)"; c.lineWidth = 2; c.stroke();
+        var cell = 36, gap = 10;
+        var gridWidth = 7 * cell + 6 * gap;
+        var hx = Math.round((W - gridWidth) / 2);
+        var hy = 748;
+        c.fillStyle = "#f2f2f3"; c.font = "700 30px Arial"; c.textAlign = "center"; c.textBaseline = "alphabetic"; c.fillText("Heatmap", W / 2, 670);
         var startOffset = (first.getDay() + 6) % 7;
         var headers = ["S","T","Q","Q","S","S","D"];
-        for (var h=0; h<7; h++){ c.fillStyle = "#8f8f98"; c.font = "18px Arial"; c.textAlign = "center"; c.fillText(headers[h], hx + h * (cell + gap) + cell/2, hy - 16); }
+        for (var h=0; h<7; h++){
+          c.fillStyle = "#8f8f98";
+          c.font = "18px Arial";
+          c.textAlign = "center";
+          c.textBaseline = "alphabetic";
+          c.fillText(headers[h], hx + h * (cell + gap) + cell/2, hy - 24);
+        }
         var x = hx + startOffset * (cell + gap), y = hy;
         for (var day=1; day<=last.getDate(); day++){
           var dateKey = isoFromDate(new Date(year, month, day));
@@ -1562,7 +1572,7 @@
           else if (totalDay >= 1000) fill = "rgba(255,122,24,0.36)";
           else if (totalDay >= 250) fill = "rgba(255,122,24,0.22)";
           else if (totalDay > 0) fill = "rgba(255,122,24,0.12)";
-          roundRectPath(c, x, y, cell, cell, 8); c.fillStyle = fill; c.fill(); c.strokeStyle = "rgba(255,255,255,0.06)"; c.lineWidth = 1; c.stroke();
+          roundRectPath(c, x, y, cell, cell, 10); c.fillStyle = fill; c.fill(); c.strokeStyle = "rgba(255,255,255,0.06)"; c.lineWidth = 1; c.stroke();
           c.fillStyle = "#f2f2f3"; c.font = "16px Arial"; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(String(day), x + cell/2, y + cell/2);
           x += cell + gap;
           if ((day + startOffset) % 7 === 0){ x = hx; y += cell + gap; }
@@ -1572,7 +1582,7 @@
       }
 
       function exportJSON(){
-        var payload = { app: "Entre Sonhos — Writing Tracker", version: 4, exportedAt: new Date().toISOString(), projects: projects, entries: entries, milestoneLog: milestoneLog, milestoneSeen: milestoneSeen };
+        var payload = { app: "Entre Sonhos â€” Writing Tracker", version: 4, exportedAt: new Date().toISOString(), projects: projects, entries: entries, milestoneLog: milestoneLog, milestoneSeen: milestoneSeen };
         var blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
         var stamp = new Date().toISOString().slice(0,10);
         downloadBlob(blob, "writing-tracker_" + stamp + ".json");
@@ -1582,7 +1592,7 @@
         var reader = new FileReader();
         reader.onload = function(){
           var data;
-          try{ data = JSON.parse(String(reader.result || "")); }catch(e){ alert("JSON inválido."); return; }
+          try{ data = JSON.parse(String(reader.result || "")); }catch(e){ alert("JSON invÃ¡lido."); return; }
           if (!data || typeof data !== "object"){ alert("Formato inesperado."); return; }
           var normalized = normalizeImportedData(data);
           projects = normalized.projects;
